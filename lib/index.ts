@@ -10,8 +10,10 @@ program.version('0.0.1');
 
 program
   .argument('<file>', 'file to analyze')
+  .option('-d --delay <delay>', 'delay between two HTTP call')
+  .option('-o --output <output>', 'output file')
   .option('-s --separator <separator>', 'column separator')
-  .option('-o --output <output>', 'output file');
+;
 
 program.parse(process.argv);
 

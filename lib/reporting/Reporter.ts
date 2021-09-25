@@ -4,8 +4,9 @@ import {OptionValues} from 'commander';
 
 export default class Reporter {
 
-  output?: string;
   private _options: OptionValues;
+
+  output?: string;
 
   constructor(options: OptionValues) {
     this._options = options;

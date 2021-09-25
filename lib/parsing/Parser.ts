@@ -5,8 +5,9 @@ import Line from './Line.js';
 
 export default class Parser {
 
-  separator: string;
   private _options: OptionValues;
+
+  separator: string;
 
   constructor(options: OptionValues) {
     this._options= options;

@@ -8,8 +8,17 @@ export default class Analyzer {
 
   private _options: OptionValues;
 
+  delay?: number;
+
   constructor(options: OptionValues) {
     this._options = options;
+    this.delay = options.delay;
+  }
+
+  async _sleep(ms: number) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
   }
 
   _isValid(response: AxiosResponse): boolean {
@@ -39,11 +48,13 @@ export default class Analyzer {
 
       const analyzedLine = new AnalyzedLine(line);
 
-      try {
-        new URL(line.url);
-      } catch (error: any) {
-        analyzedLine.markInError('FORMAT_ERROR', error.message);
-        process.stdout.write('⚠️ [FORMAT_ERROR]\n');
+      if (!analyzedLine.error) {
+        try {
+          new URL(line.url);
+        } catch (error: any) {
+          analyzedLine.markInError('FORMAT_ERROR', error.message);
+          process.stdout.write('⚠️ [FORMAT_ERROR]\n');
+        }
       }
 
       if (!analyzedLine.error) {
@@ -58,6 +69,10 @@ export default class Analyzer {
         } catch(err) {
           analyzedLine.markInError('HTTP_ERROR', 'Unreachable HTTP resource');
           process.stdout.write('⚠️️ [HTTP_ERROR]\n');
+        } finally {
+          if (this.delay) {
+            await this._sleep(this.delay);
+          }
         }
       }
 
