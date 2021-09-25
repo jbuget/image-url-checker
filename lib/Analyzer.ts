@@ -35,23 +35,28 @@ export default class Analyzer {
     const analyzedLines: AnalyzedLine[] = [];
 
     for (const line of lines) {
-      process.stdout.write(`  ${line.raw}... `);
+      process.stdout.write(`  ${line.raw}`);
 
       const analyzedLine = new AnalyzedLine(line);
 
       try {
         new URL(line.url);
       } catch (error: any) {
-        analyzedLine.markInError('FORMAT_ERROR', error.input);
-        process.stdout.write('⚠️️ [FORMAT_ERROR]\n');
+        analyzedLine.markInError('FORMAT_ERROR', error.message);
+        process.stdout.write('⚠️ [FORMAT_ERROR]\n');
       }
 
       if (!analyzedLine.error) {
-        const response = await axios.get(line.url);
-        if (this._isValid(response)) {
-          process.stdout.write('✅\n');
-        } else {
-          analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
+        try {
+          const response = await axios.get(line.url);
+          if (this._isValid(response)) {
+            process.stdout.write('✅\n');
+          } else {
+            analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
+            process.stdout.write('⚠️️ [HTTP_ERROR]\n');
+          }
+        } catch(err) {
+          analyzedLine.markInError('HTTP_ERROR', 'Unreachable HTTP resource');
           process.stdout.write('⚠️️ [HTTP_ERROR]\n');
         }
       }

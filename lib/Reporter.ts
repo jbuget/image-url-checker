@@ -26,7 +26,12 @@ export default class Reporter {
       if (this.output) {
         const outputStream = createWriteStream(this.output, {flags: 'w'});
         analyzedLines.forEach((line) => {
-          outputStream.write(`${line.reference};${line.url};${line.status}\n`);
+          outputStream.write(`${line.reference};${line.url};${line.status}`);
+          if (line.error) {
+            outputStream.write(`;${line.error};`);
+            line.comments.forEach((comment) => outputStream.write(`•${comment}`));
+          }
+          outputStream.write('\n');
         });
         outputStream.end();
         outputStream.on('finish', () => resolve);
