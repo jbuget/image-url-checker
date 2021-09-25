@@ -3,10 +3,12 @@ import {URL} from 'url';
 import Line from '../parsing/Line.js';
 import AnalyzedLine from './AnalyzedLine.js';
 import {OptionValues} from 'commander';
+import {logger} from '../tools/Logger.js';
+import chalk from 'chalk';
 
 export default class Analyzer {
 
-  private _options: OptionValues;
+  private readonly _options: OptionValues;
 
   delay?: number;
 
@@ -34,18 +36,16 @@ export default class Analyzer {
   }
 
   async analyze(lines: Line[]): Promise<AnalyzedLine[]> {
-    console.log('--------------------------------------------------------------------------------');
-    console.log('Phase: "Analyzing"');
-    console.log(`  - lines: ${lines.length}`);
-    console.log();
+    logger.info('--------------------------------------------------------------------------------');
+    logger.info('Phase: "Analyzing"');
+    logger.info(`  - lines: ${lines.length}`);
+    logger.info();
 
     const hrStart: [number, number] = process.hrtime();
 
     const analyzedLines: AnalyzedLine[] = [];
 
     for (const line of lines) {
-      process.stdout.write(`  ${line.raw}`);
-
       const analyzedLine = new AnalyzedLine(line);
 
       if (!analyzedLine.error) {
@@ -53,22 +53,17 @@ export default class Analyzer {
           new URL(line.url);
         } catch (error: any) {
           analyzedLine.markInError('FORMAT_ERROR', error.message);
-          process.stdout.write('⚠️ [FORMAT_ERROR]\n');
         }
       }
 
       if (!analyzedLine.error) {
         try {
           const response = await axios.get(line.url);
-          if (this._isValid(response)) {
-            process.stdout.write('✅\n');
-          } else {
+          if (!this._isValid(response)) {
             analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
-            process.stdout.write('⚠️️ [HTTP_ERROR]\n');
           }
-        } catch(err) {
+        } catch (err) {
           analyzedLine.markInError('HTTP_ERROR', 'Unreachable HTTP resource');
-          process.stdout.write('⚠️️ [HTTP_ERROR]\n');
         } finally {
           if (this.delay) {
             await this._sleep(this.delay);
@@ -81,12 +76,19 @@ export default class Analyzer {
       }
 
       analyzedLines.push(analyzedLine);
+
+      if (!analyzedLine.error) {
+        logger.info(chalk.green(`${analyzedLine.raw}`));
+      } else {
+        logger.info(chalk.red(`${analyzedLine.raw}`) + ' ' + chalk.yellow(`[${analyzedLine.error}]`));
+      }
+
     }
 
-    console.log();
+    logger.info();
     const hrEnd: [number, number] = process.hrtime(hrStart);
-    console.log('Execution time (hr): %ds %dms', hrEnd[0], hrEnd[1] / 1000000);
-    console.log();
+    logger.info(`Execution time (hr): ${hrEnd[0]}s ${hrEnd[1] / 1000000}ms`);
+    logger.info();
 
     return analyzedLines;
   }

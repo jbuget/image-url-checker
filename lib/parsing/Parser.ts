@@ -2,10 +2,11 @@ import {createReadStream} from 'fs';
 import readline from 'readline';
 import {OptionValues} from 'commander';
 import Line from './Line.js';
+import { logger } from '../tools/Logger.js';
 
 export default class Parser {
 
-  private _options: OptionValues;
+  private readonly _options: OptionValues;
 
   separator: string;
 
@@ -16,11 +17,11 @@ export default class Parser {
 
   parse(file: string): Promise<Line[]> {
     return new Promise<Line[]>((resolve, reject) => {
-      console.log('--------------------------------------------------------------------------------');
-      console.log('Phase: "Parsing"');
-      console.log(` - file: ${file}`);
-      console.log(` - separator: ${this.separator}`);
-      console.log();
+      logger.info('--------------------------------------------------------------------------------');
+      logger.info('Phase: "Parsing"');
+      logger.info(` - file: ${file}`);
+      logger.info(` - separator: ${this.separator}`);
+      logger.info();
 
       const hrStart: [number, number] = process.hrtime();
 
@@ -32,7 +33,7 @@ export default class Parser {
       });
 
       rl.on('line', (rawLine) => {
-        console.log(`  ${rawLine} ✓`);
+        logger.info(`  ${rawLine} ✓`);
         let reference: string, url: string;
         [reference, url] = rawLine.split(this.separator);
         const line = new Line(index++, rawLine, reference, url);
@@ -40,10 +41,10 @@ export default class Parser {
       });
 
       rl.on('close', () => {
-        console.log();
+        logger.info();
         const hrEnd: [number, number] = process.hrtime(hrStart);
-        console.log('Execution time (hr): %ds %dms', hrEnd[0], hrEnd[1] / 1000000);
-        console.log();
+        logger.info(`Execution time (hr): ${hrEnd[0]}s ${hrEnd[1] / 1000000}ms`);
+        logger.info();
 
         resolve(lines);
       });

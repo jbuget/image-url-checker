@@ -4,6 +4,7 @@ import Analyzer from './analyzing/Analyzer.js';
 import Line from './parsing/Line.js';
 import Parser from './parsing/Parser.js';
 import Reporter from './reporting/Reporter.js';
+import { logger} from './tools/Logger.js';
 
 const program = new Command();
 program.version('0.0.1');
@@ -21,6 +22,14 @@ const options = program.opts();
 
 async function main() {
   const file = program.args[0];
+
+  logger.info('--------------------------------------------------------------------------------');
+  logger.info('Options:');
+  logger.info(`  file: ${file}`);
+  logger.info(`  delay: ${options.delay}`);
+  logger.info(`  output: ${options.output}`);
+  logger.info(`  separator: ${options.separator}`);
+  logger.info();
 
   const parser = new Parser(options);
   const lines: Line[] = await parser.parse(file);

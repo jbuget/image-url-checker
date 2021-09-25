@@ -1,10 +1,11 @@
 import {createWriteStream} from 'fs';
 import AnalyzedLine from '../analyzing/AnalyzedLine.js';
 import {OptionValues} from 'commander';
+import { logger } from '../tools/Logger.js';
 
 export default class Reporter {
 
-  private _options: OptionValues;
+  private readonly _options: OptionValues;
 
   output?: string;
 
@@ -15,10 +16,10 @@ export default class Reporter {
 
   async report(analyzedLines: AnalyzedLine[]) {
     return new Promise((resolve, reject) => {
-      console.log('--------------------------------------------------------------------------------');
-      console.log('Phase: "Reporting"');
-      console.log(`  - analyzed lines: ${analyzedLines.length}`);
-      console.log();
+      logger.info('--------------------------------------------------------------------------------');
+      logger.info('Phase: "Reporting"');
+      logger.info(`  - analyzed lines: ${analyzedLines.length}`);
+      logger.info();
 
       const hrStart: [number, number] = process.hrtime();
 
@@ -28,7 +29,7 @@ export default class Reporter {
           outputStream.write(`${line.reference};${line.url};${line.status}`);
           if (line.error) {
             outputStream.write(`;${line.error};`);
-            line.comments.forEach((comment) => outputStream.write(`•${comment}`));
+            line.comments.forEach((comment) => outputStream.write(`${comment} `));
           }
           outputStream.write('\n');
         });
@@ -36,10 +37,9 @@ export default class Reporter {
         outputStream.on('finish', () => resolve);
       }
 
-      console.log();
       const hrEnd: [number, number] = process.hrtime(hrStart);
-      console.log('Execution time (hr): %ds %dms', hrEnd[0], hrEnd[1] / 1000000);
-      console.log();
+      logger.info(`Execution time (hr): ${hrEnd[0]}s ${hrEnd[1] / 1000000}ms`);
+      logger.info();
     });
   }
 }
