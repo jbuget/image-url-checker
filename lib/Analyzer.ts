@@ -1,18 +1,10 @@
 import axios, {AxiosResponse} from 'axios';
-import {OptionValues} from 'commander';
+import {URL} from 'url';
 import Line from './Line.js';
 import Report from './Report.js';
-import Parser from './Parser.js';
+import AnalyzedLine from './AnalyzedLine.js';
 
 export default class Analyzer {
-
-  file: string;
-  options: OptionValues;
-
-  constructor(file: string, options: OptionValues) {
-    this.file = file;
-    this.options = options;
-  }
 
   _isValid(response: AxiosResponse): boolean {
     return this._isStatusOk(response) && this._isAnImage(response);
@@ -26,41 +18,48 @@ export default class Analyzer {
     return response.headers['content-type'].trim().toLowerCase().startsWith('image/');
   }
 
-  async analyze(): Promise<Report> {
+  async analyze(lines: Line[]): Promise<Report> {
+    console.log('--------------------------------------------------------------------------------');
+    console.log('Phase: "Analyzing"');
+    console.log(`  - lines: ${lines.length}`);
+    console.log();
+
+    const hrStart: [number, number] = process.hrtime();
+
     const report = new Report();
+    report.start();
 
-    console.log('----------------------------------------');
-    console.log('1) Parse file');
-    console.log('----------------------------------------');
-    const parser = new Parser(this.file, this.options.delimiter);
-    const lines: Line[] = await parser.parse();
-    console.log('');
-
-    console.log('----------------------------------------');
-    console.log('2) Test URLs');
-    console.log('----------------------------------------');
     for (const line of lines) {
-      if (!line.error) {
-        process.stdout.write(`  ${line.index}. ${line.reference} - ${line.url} `);
+      process.stdout.write(`  ${line.raw}... `);
+
+      const analyzedLine = new AnalyzedLine(line);
+
+      try {
+        new URL(line.url);
+      } catch (error: any) {
+        analyzedLine.markInError('FORMAT_ERROR', error.input);
+        process.stdout.write('⚠️️ [FORMAT_ERROR]\n');
+      }
+
+      if (!analyzedLine.error) {
         const response = await axios.get(line.url);
         if (this._isValid(response)) {
           process.stdout.write('✅\n');
         } else {
-          line.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
-          process.stdout.write('⚠️️\n');
+          analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
+          process.stdout.write('⚠️️ [HTTP_ERROR]\n');
         }
       }
+
+      report.addAnalyzedLine(analyzedLine);
     }
-    console.log('');
 
-    report.consignLines(lines);
-    report.finalize();
+    report.stop();
 
-    console.log('----------------------------------------');
-    console.log('3) Print report');
-    console.log('----------------------------------------');
-    report.print();
-    console.log('');
+    console.log();
+    const hrEnd: [number, number] = process.hrtime(hrStart);
+    console.log('Execution time (hr): %ds %dms', hrEnd[0], hrEnd[1] / 1000000);
+    console.log();
     return report;
   }
 }
