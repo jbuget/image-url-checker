@@ -2,8 +2,15 @@ import axios, {AxiosResponse} from 'axios';
 import {URL} from 'url';
 import Line from './Line.js';
 import AnalyzedLine from './AnalyzedLine.js';
+import {OptionValues} from 'commander';
 
 export default class Analyzer {
+
+  private _options: OptionValues;
+
+  constructor(options: OptionValues) {
+    this._options = options;
+  }
 
   _isValid(response: AxiosResponse): boolean {
     return this._isStatusOk(response) && this._isAnImage(response);
@@ -47,6 +54,10 @@ export default class Analyzer {
           analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
           process.stdout.write('⚠️️ [HTTP_ERROR]\n');
         }
+      }
+
+      if (!analyzedLine.error) {
+        analyzedLine.markInSuccess();
       }
 
       analyzedLines.push(analyzedLine);

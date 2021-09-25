@@ -1,13 +1,16 @@
 import {createReadStream} from 'fs';
 import readline from 'readline';
+import {OptionValues} from 'commander';
 import Line from './Line.js';
 
 export default class Parser {
 
   delimiter: string;
+  private _options: OptionValues;
 
-  constructor(delimiter: string = ';') {
-    this.delimiter = delimiter;
+  constructor(options: OptionValues) {
+    this._options= options;
+    this.delimiter = options.delimiter ? options.delimiter : ';';
   }
 
   parse(file: string): Promise<Line[]> {

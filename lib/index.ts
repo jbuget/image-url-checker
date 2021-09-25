@@ -11,7 +11,7 @@ program.version('0.0.1');
 program
   .argument('<file>', 'file to analyze')
   .option('-d --delimiter <delimiter>', 'column delimiter')
-  .option('-o --output <outputFile>', 'output file');
+  .option('-o --output <output>', 'output file');
 
 program.parse(process.argv);
 
@@ -20,14 +20,14 @@ const options = program.opts();
 async function main() {
   const file = program.args[0];
 
-  const parser = new Parser(options.delimiter);
+  const parser = new Parser(options);
   const lines: Line[] = await parser.parse(file);
 
-  const analyzer = new Analyzer();
+  const analyzer = new Analyzer(options);
   const analyzedLines: AnalyzedLine[] = await analyzer.analyze(lines);
 
-  const reporter: Reporter = new Reporter();
-  reporter.report(analyzedLines);
+  const reporter: Reporter = new Reporter(options);
+  await reporter.report(analyzedLines);
 
   process.exit(0);
 }
