@@ -1,9 +1,9 @@
 import {Command} from 'commander';
-import Analyzer from './Analyzer.js';
-import Parser from './Parser.js';
-import Line from './Line.js';
-import Reporter from './Reporter.js';
-import AnalyzedLine from './AnalyzedLine.js';
+import AnalyzedLine from './analyzing/AnalyzedLine.js';
+import Analyzer from './analyzing/Analyzer.js';
+import Line from './parsing/Line.js';
+import Parser from './parsing/Parser.js';
+import Reporter from './reporting/Reporter.js';
 
 const program = new Command();
 program.version('0.0.1');

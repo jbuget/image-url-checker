@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import {URL} from 'url';
-import Line from './Line.js';
+import Line from '../parsing/Line.js';
 import AnalyzedLine from './AnalyzedLine.js';
 import {OptionValues} from 'commander';
 

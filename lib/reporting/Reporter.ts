@@ -1,7 +1,6 @@
 import {createWriteStream} from 'fs';
-import AnalyzedLine from './AnalyzedLine.js';
+import AnalyzedLine from '../analyzing/AnalyzedLine.js';
 import {OptionValues} from 'commander';
-import Line from './Line';
 
 export default class Reporter {
 
@@ -14,7 +13,7 @@ export default class Reporter {
   }
 
   async report(analyzedLines: AnalyzedLine[]) {
-    return new Promise<Line[]>((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       console.log('--------------------------------------------------------------------------------');
       console.log('Phase: "Reporting"');
       console.log(`  - analyzed lines: ${analyzedLines.length}`);

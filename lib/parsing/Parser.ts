@@ -45,7 +45,7 @@ export default class Parser {
         console.log();
 
         resolve(lines);
-      })
+      });
     })
   }
 }
