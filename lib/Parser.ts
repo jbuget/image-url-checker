@@ -40,6 +40,7 @@ export default class Parser {
         const hrEnd: [number, number] = process.hrtime(hrStart);
         console.log('Execution time (hr): %ds %dms', hrEnd[0], hrEnd[1] / 1000000);
         console.log();
+
         resolve(lines);
       })
     })

@@ -1,11 +1,11 @@
-import Report from './Report.js';
+import AnalyzedLine from './AnalyzedLine.js';
 
-export default class Printer {
+export default class Reporter {
 
-  print(report: Report) {
+  report(analyzedLines: AnalyzedLine[]) {
     console.log('--------------------------------------------------------------------------------');
     console.log('Phase: "Reporting"');
-    console.log(`  - analyzed lines: ${report.analyzedLines.length}`);
+    console.log(`  - analyzed lines: ${analyzedLines.length}`);
     console.log();
 
     const hrStart: [number, number] = process.hrtime();

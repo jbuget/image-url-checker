@@ -1,7 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import {URL} from 'url';
 import Line from './Line.js';
-import Report from './Report.js';
 import AnalyzedLine from './AnalyzedLine.js';
 
 export default class Analyzer {
@@ -18,7 +17,7 @@ export default class Analyzer {
     return response.headers['content-type'].trim().toLowerCase().startsWith('image/');
   }
 
-  async analyze(lines: Line[]): Promise<Report> {
+  async analyze(lines: Line[]): Promise<AnalyzedLine[]> {
     console.log('--------------------------------------------------------------------------------');
     console.log('Phase: "Analyzing"');
     console.log(`  - lines: ${lines.length}`);
@@ -26,8 +25,7 @@ export default class Analyzer {
 
     const hrStart: [number, number] = process.hrtime();
 
-    const report = new Report();
-    report.start();
+    const analyzedLines: AnalyzedLine[] = [];
 
     for (const line of lines) {
       process.stdout.write(`  ${line.raw}... `);
@@ -51,15 +49,14 @@ export default class Analyzer {
         }
       }
 
-      report.addAnalyzedLine(analyzedLine);
+      analyzedLines.push(analyzedLine);
     }
-
-    report.stop();
 
     console.log();
     const hrEnd: [number, number] = process.hrtime(hrStart);
     console.log('Execution time (hr): %ds %dms', hrEnd[0], hrEnd[1] / 1000000);
     console.log();
-    return report;
+
+    return analyzedLines;
   }
 }

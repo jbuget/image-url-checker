@@ -1,9 +1,9 @@
 import {Command} from 'commander';
 import Analyzer from './Analyzer.js';
-import Report from './Report.js';
 import Parser from './Parser.js';
 import Line from './Line.js';
-import Printer from './Printer.js';
+import Reporter from './Reporter.js';
+import AnalyzedLine from './AnalyzedLine.js';
 
 const program = new Command();
 program.version('0.0.1');
@@ -24,10 +24,10 @@ async function main() {
   const lines: Line[] = await parser.parse(file);
 
   const analyzer = new Analyzer();
-  const report: Report = await analyzer.analyze(lines);
+  const analyzedLines: AnalyzedLine[] = await analyzer.analyze(lines);
 
-  const printer: Printer = new Printer();
-  printer.print(report);
+  const reporter: Reporter = new Reporter();
+  reporter.report(analyzedLines);
 
   process.exit(0);
 }
