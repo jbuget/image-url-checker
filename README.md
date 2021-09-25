@@ -50,3 +50,7 @@ Supported data format (without head line):
 <reference>;<url>
 ```
 
+### Output
+
+![Screenshot](docs/url-checker_screenshot.png)
+
