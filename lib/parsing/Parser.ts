@@ -5,12 +5,12 @@ import Line from './Line.js';
 
 export default class Parser {
 
-  delimiter: string;
+  separator: string;
   private _options: OptionValues;
 
   constructor(options: OptionValues) {
     this._options= options;
-    this.delimiter = options.delimiter ? options.delimiter : ';';
+    this.separator = options.separator ? options.separator : ';';
   }
 
   parse(file: string): Promise<Line[]> {
@@ -18,7 +18,7 @@ export default class Parser {
       console.log('--------------------------------------------------------------------------------');
       console.log('Phase: "Parsing"');
       console.log(` - file: ${file}`);
-      console.log(` - delimiter: ${this.delimiter}`);
+      console.log(` - separator: ${this.separator}`);
       console.log();
 
       const hrStart: [number, number] = process.hrtime();
@@ -33,7 +33,7 @@ export default class Parser {
       rl.on('line', (rawLine) => {
         console.log(`  ${rawLine} ✓`);
         let reference: string, url: string;
-        [reference, url] = rawLine.split(this.delimiter);
+        [reference, url] = rawLine.split(this.separator);
         const line = new Line(index++, rawLine, reference, url);
         lines.push(line);
       });

@@ -37,7 +37,7 @@ node dist/index.js [-d ";"] [-o "output.txt"] file
 
 | option | description | default value |
 | ------ | ----------- | ------------- |
-| -d --delimiter _separator_ | column separator | ; |
+| -s --separator _delimiter_ | column separator | ; |
 | -p --ouput _filepath_ | ouput file path |  |
 
 ### Input file

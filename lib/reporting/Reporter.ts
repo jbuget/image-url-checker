@@ -21,7 +21,6 @@ export default class Reporter {
 
       const hrStart: [number, number] = process.hrtime();
 
-      // TODO
       if (this.output) {
         const outputStream = createWriteStream(this.output, {flags: 'w'});
         analyzedLines.forEach((line) => {
