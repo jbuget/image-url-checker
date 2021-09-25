@@ -26,7 +26,20 @@ export default class Parser {
         let reference: string, url: string;
         [reference, url] = rawLine.split(this.delimiter);
         const line = new Line(index++, rawLine, reference, url);
+
+        try {
+          new URL(url);
+        } catch (error: any) {
+          line.markInError('PARSING_ERROR', error.input);
+        }
+
         lines.push(line);
+        process.stdout.write(`  ${line.index}. ${line.reference} - ${line.url} `);
+        if (!line.error) {
+          process.stdout.write('✅\n');
+        } else {
+          process.stdout.write('⚠️️\n');
+        }
       });
 
       rl.on('close', () => {

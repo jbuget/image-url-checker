@@ -14,13 +14,6 @@ export default class Line {
     this.reference = reference;
     this.url = url;
     this.comments = [];
-
-    try {
-      new URL(url);
-    } catch (error: any) {
-      this.markInError('PARSING_ERROR', error.input);
-    }
-
   }
 
   markInError(errorType: string, errorMessage: string) {

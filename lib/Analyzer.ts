@@ -29,12 +29,16 @@ export default class Analyzer {
   async analyze(): Promise<Report> {
     const report = new Report();
 
+    console.log('----------------------------------------');
     console.log('1) Parse file');
+    console.log('----------------------------------------');
     const parser = new Parser(this.file, this.options.delimiter);
     const lines: Line[] = await parser.parse();
     console.log('');
 
+    console.log('----------------------------------------');
     console.log('2) Test URLs');
+    console.log('----------------------------------------');
     for (const line of lines) {
       if (!line.error) {
         process.stdout.write(`  ${line.index}. ${line.reference} - ${line.url} `);
@@ -52,7 +56,9 @@ export default class Analyzer {
     report.consignLines(lines);
     report.finalize();
 
+    console.log('----------------------------------------');
     console.log('3) Print report');
+    console.log('----------------------------------------');
     report.print();
     console.log('');
     return report;
