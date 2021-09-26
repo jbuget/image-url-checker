@@ -13,7 +13,7 @@
     "url": "git+https://github.com/jbuget/url-checker.git"
   },
   "author": "Jérémy Buget <contact@jbuget.fr>",
-  "license": "ISC",
+  "license": "AGPL-3.0",
   "bugs": {
     "url": "https://github.com/jbuget/url-checker/issues"
   },
