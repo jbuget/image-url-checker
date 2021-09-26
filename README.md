@@ -1,4 +1,4 @@
-# URL-Checker
+# image-url-checker
 
 ## Installation
 
@@ -8,12 +8,12 @@ Pré-requis : disposer d'une version opérationnelle de Node.js/npm sur son post
 
 Récupérer les sources : 
 ``` 
-git clone https://github.com/jbuget/url-checker.git 
+git clone https://github.com/jbuget/image-url-checker.git 
 ```
 
 Se rendre dans le répertoire source : 
 ```
-cd url-checker
+cd image-url-checker
 ```
 
 Télécharger les dépendances : 
@@ -55,5 +55,5 @@ Supported data format (without head line):
 
 ### Output
 
-![Screenshot](docs/url-checker_screenshot.png)
+![Screenshot](docs/image-url-checker_screenshot.png)
 

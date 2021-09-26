@@ -1,23 +1,23 @@
 {
-  "name": "url-checker",
+  "name": "image-url-checker",
   "version": "0.0.1",
-  "description": "Node URL checker",
+  "description": "Node images URL checker",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index",
-    "test": "npm run build && npm start -- -v -o reports/report.txt data/short.csv"
+    "test": "npm run build && npm start -- -o short.log data/short.csv"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jbuget/url-checker.git"
+    "url": "git+https://github.com/jbuget/image-url-checker.git"
   },
   "author": "Jérémy Buget <contact@jbuget.fr>",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/jbuget/url-checker/issues"
+    "url": "https://github.com/jbuget/image-url-checker/issues"
   },
-  "homepage": "https://github.com/jbuget/url-checker#readme",
+  "homepage": "https://github.com/jbuget/image-url-checker#readme",
   "engines": {
     "node": "14.17.6",
     "npm": "6.14.15"
