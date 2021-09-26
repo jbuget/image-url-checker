@@ -9,10 +9,12 @@ export default class Parser {
   private readonly _options: OptionValues;
 
   separator: string;
+  from?: number;
 
   constructor(options: OptionValues) {
     this._options= options;
     this.separator = options.separator ? options.separator : ';';
+    this.from = options.from;
   }
 
   parse(file: string): Promise<Line[]> {
@@ -20,6 +22,7 @@ export default class Parser {
       logger.info('--------------------------------------------------------------------------------');
       logger.info('Phase: "Parsing"');
       logger.info(` - file: ${file}`);
+      logger.info(` - from: ${this.from}`);
       logger.info(` - separator: ${this.separator}`);
       logger.info();
 
@@ -36,8 +39,18 @@ export default class Parser {
         logger.info(`  ${rawLine}`);
         let reference: string, url: string;
         [reference, url] = rawLine.split(this.separator);
-        const line = new Line(index++, rawLine, reference, url);
-        lines.push(line);
+
+        if (this.from) {
+          if (index >= this.from) {
+            const line = new Line(index++, rawLine, reference, url);
+            lines.push(line);
+          } else {
+            index++;
+          }
+        } else {
+          const line = new Line(index++, rawLine, reference, url);
+          lines.push(line);
+        }
       });
 
       rl.on('close', () => {

@@ -38,6 +38,7 @@ node dist/index.js [-d ";"] [-o "output.txt"] file
 | option | description | default value |
 | ------ | ----------- | ------------- |
 | -d --delay _delay_in_ms_ | delay between two URL calls | None |
+| --from _line_from_ | line from | None |
 | -s --separator _delimiter_ | column separator | ; |
 | -o --ouput _filepath_ | ouput file path | None |
 
