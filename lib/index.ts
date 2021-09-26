@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import {Command} from 'commander';
 import AnalyzedLine from './analyzing/AnalyzedLine.js';
 import Analyzer from './analyzing/Analyzer.js';

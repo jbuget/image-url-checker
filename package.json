@@ -3,10 +3,17 @@
   "version": "0.1.0",
   "description": "Node images URL checker",
   "main": "index.js",
+  "bin": {
+    "image-url-checker": "./build/index.js"
+  },
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index",
+    "package": "npm run build && pkg . --output dist/image-url-checker",
+    "start": "node build/index",
     "test": "npm run build && npm start -- -o short.log data/short.csv"
+  },
+  "pkg": {
+    "scripts": "build/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -34,8 +41,8 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
+    "pkg": "^5.3.2",
     "tslog": "^3.2.2",
     "typescript": "^4.4.3"
-  },
-  "type": "module"
+  }
 }
