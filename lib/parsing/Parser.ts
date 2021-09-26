@@ -10,11 +10,13 @@ export default class Parser {
 
   separator: string;
   from?: number;
+  to?: number;
 
   constructor(options: OptionValues) {
     this._options= options;
     this.separator = options.separator ? options.separator : ';';
     this.from = options.from;
+    this.to = options.to;
   }
 
   parse(file: string): Promise<Line[]> {
@@ -24,6 +26,7 @@ export default class Parser {
       logger.info(` - file: ${file}`);
       logger.info(` - from: ${this.from}`);
       logger.info(` - separator: ${this.separator}`);
+      logger.info(` - to: ${this.to}`);
       logger.info();
 
       const hrStart: [number, number] = process.hrtime();
@@ -36,21 +39,21 @@ export default class Parser {
       });
 
       rl.on('line', (rawLine) => {
-        logger.info(`  ${rawLine}`);
         let reference: string, url: string;
         [reference, url] = rawLine.split(this.separator);
 
-        if (this.from) {
-          if (index >= this.from) {
-            const line = new Line(index++, rawLine, reference, url);
-            lines.push(line);
-          } else {
-            index++;
-          }
-        } else {
-          const line = new Line(index++, rawLine, reference, url);
+        let mustAddLine: boolean = true;
+
+        if (this.from && index < this.from) mustAddLine = mustAddLine && false;
+        if (this.to && index > this.to) mustAddLine = mustAddLine && false;
+
+        if (mustAddLine) {
+          logger.info(`  ${rawLine}`);
+          const line = new Line(index, rawLine, reference, url);
           lines.push(line);
         }
+
+        index++;
       });
 
       rl.on('close', () => {

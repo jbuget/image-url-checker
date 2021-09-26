@@ -13,6 +13,7 @@ program
   .argument('<file>', 'file to analyze')
   .option('-d --delay <delay>', 'delay between two HTTP call')
   .option('--from <from>', 'line from')
+  .option('--to <to>', 'line to')
   .option('-o --output <output>', 'output file')
   .option('-s --separator <separator>', 'column separator')
 ;
@@ -31,6 +32,7 @@ async function main() {
   logger.info(`  output: ${options.output}`);
   logger.info(`  separator: ${options.separator}`);
   logger.info(`  from: ${options.from}`);
+  logger.info(`  to: ${options.to}`);
   logger.info();
 
   const parser = new Parser(options);
