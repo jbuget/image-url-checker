@@ -80,6 +80,8 @@ export default class Analyzer {
     logger.info('--------------------------------------------------------------------------------');
     logger.info('Phase: "Analyzing"');
     logger.info(`  - lines: ${lines.length}`);
+    logger.info(`  - bulk: ${this.bulk}`);
+    logger.info(`  - delay: ${this.delay}`);
     logger.info();
 
     const hrStart: [number, number] = process.hrtime();

@@ -28,13 +28,13 @@ async function main() {
 
   logger.info('--------------------------------------------------------------------------------');
   logger.info('Options:');
-  logger.info(`  file: ${file}`);
-  logger.info(`  bulk: ${options.bulk}`);
-  logger.info(`  delay: ${options.delay}`);
-  logger.info(`  from: ${options.from}`);
-  logger.info(`  output: ${options.output}`);
-  logger.info(`  separator: ${options.separator}`);
-  logger.info(`  to: ${options.to}`);
+  logger.info(`  - file: ${file}`);
+  logger.info(`  - bulk: ${options.bulk}`);
+  logger.info(`  - delay: ${options.delay}`);
+  logger.info(`  - from: ${options.from}`);
+  logger.info(`  - output: ${options.output}`);
+  logger.info(`  - separator: ${options.separator}`);
+  logger.info(`  - to: ${options.to}`);
   logger.info();
 
   const parser = new Parser(options);
