@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import {createReadStream} from 'fs';
 import readline from 'readline';
 import {OptionValues} from 'commander';
@@ -51,6 +52,8 @@ export default class Parser {
           logger.info(`  ${rawLine}`);
           const line = new Line(index, rawLine, reference, url);
           lines.push(line);
+        } else {
+          logger.info(`  ${chalk.gray(rawLine)}`);
         }
 
         index++;

@@ -1,10 +1,10 @@
 import axios, {AxiosResponse} from 'axios';
+import chalk from 'chalk';
 import {URL} from 'url';
 import Line from '../parsing/Line.js';
 import AnalyzedLine from './AnalyzedLine.js';
 import {OptionValues} from 'commander';
 import {logger} from '../tools/Logger.js';
-import chalk from 'chalk';
 
 export default class Analyzer {
 
