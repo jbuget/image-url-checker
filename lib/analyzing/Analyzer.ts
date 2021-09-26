@@ -78,9 +78,9 @@ export default class Analyzer {
       analyzedLines.push(analyzedLine);
 
       if (!analyzedLine.error) {
-        logger.info(chalk.green(`${analyzedLine.raw}`));
+        logger.info(chalk.cyan(`${analyzedLine.index}.`) + ' ' + chalk.green(`${analyzedLine.raw}`));
       } else {
-        logger.info(chalk.red(`${analyzedLine.raw}`) + ' ' + chalk.yellow(`[${analyzedLine.error}]`));
+        logger.info(chalk.cyan(`${analyzedLine.index}.`) + ' ' + chalk.red(`${analyzedLine.raw}`) + ' ' + chalk.yellow(`[${analyzedLine.error}]`));
       }
 
     }

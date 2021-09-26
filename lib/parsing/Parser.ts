@@ -33,7 +33,7 @@ export default class Parser {
       });
 
       rl.on('line', (rawLine) => {
-        logger.info(`  ${rawLine} ✓`);
+        logger.info(`  ${rawLine}`);
         let reference: string, url: string;
         [reference, url] = rawLine.split(this.separator);
         const line = new Line(index++, rawLine, reference, url);
