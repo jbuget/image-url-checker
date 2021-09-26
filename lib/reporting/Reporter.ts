@@ -23,6 +23,8 @@ export default class Reporter {
 
       const hrStart: [number, number] = process.hrtime();
 
+      analyzedLines.sort((a, b) => (a.index - b.index));
+
       if (this.output) {
         const outputStream = createWriteStream(this.output, {flags: 'w'});
         analyzedLines.forEach((line) => {
