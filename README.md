@@ -37,11 +37,12 @@ node dist/index.js [-d ";"] [-o "output.txt"] file
 
 | option | description | default value |
 | ------ | ----------- | ------------- |
-| -d --delay _delay_in_ms_ | delay between two URL calls | None |
-| --from _min_line_number_ | line from | None |
-| -s --separator _delimiter_ | column separator | ; |
+| -d --delay _number_ | delay (in ms) between two URL calls | None |
+| -b --bulk _number_ | number of concurrent HTTP calls during analysis phase | 10 |
+| -f --from _number_ | line "from" | None |
+| -s --separator _character_ | column separator | ; |
 | -o --ouput _filepath_ | ouput file path | None |
-| --to _max_line_number_ | line to | None |
+| -f --to _number_ | line "to" | None |
 
 ### Input file
 

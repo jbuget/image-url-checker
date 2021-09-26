@@ -10,10 +10,12 @@ export default class Analyzer {
 
   private readonly _options: OptionValues;
 
+  bulk: number;
   delay?: number;
 
   constructor(options: OptionValues) {
     this._options = options;
+    this.bulk = options.bulk || 10;
     this.delay = options.delay;
   }
 
@@ -35,6 +37,45 @@ export default class Analyzer {
     return response.headers['content-type'].trim().toLowerCase().startsWith('image/');
   }
 
+  async _analyzeSingleLine(line: Line, analyzedLines: AnalyzedLine[]): Promise<void> {
+    const analyzedLine = new AnalyzedLine(line);
+
+    if (!analyzedLine.error) {
+      try {
+        new URL(line.url);
+      } catch (error: any) {
+        analyzedLine.markInError('FORMAT_ERROR', error.message);
+      }
+    }
+
+    if (!analyzedLine.error) {
+      try {
+        const response = await axios.get(line.url);
+        if (!this._isValid(response)) {
+          analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
+        }
+      } catch (err) {
+        analyzedLine.markInError('HTTP_ERROR', 'Unreachable HTTP resource');
+      } finally {
+        if (this.delay) {
+          await this._sleep(this.delay);
+        }
+      }
+    }
+
+    if (!analyzedLine.error) {
+      analyzedLine.markInSuccess();
+    }
+
+    analyzedLines.push(analyzedLine);
+
+    if (!analyzedLine.error) {
+      logger.info(chalk.cyan(`${analyzedLine.index}.`) + ' ' + chalk.green(`${analyzedLine.raw}`));
+    } else {
+      logger.info(chalk.cyan(`${analyzedLine.index}.`) + ' ' + chalk.red(`${analyzedLine.raw}`) + ' ' + chalk.yellow(`[${analyzedLine.error}]`));
+    }
+  }
+
   async analyze(lines: Line[]): Promise<AnalyzedLine[]> {
     logger.info('--------------------------------------------------------------------------------');
     logger.info('Phase: "Analyzing"');
@@ -45,44 +86,14 @@ export default class Analyzer {
 
     const analyzedLines: AnalyzedLine[] = [];
 
-    for (const line of lines) {
-      const analyzedLine = new AnalyzedLine(line);
-
-      if (!analyzedLine.error) {
-        try {
-          new URL(line.url);
-        } catch (error: any) {
-          analyzedLine.markInError('FORMAT_ERROR', error.message);
-        }
+    let i: number = 0, nbLines: number = lines.length;
+    while (i < nbLines) {
+      const bulkLines = []
+      for (let j: number = 0 ; (i < nbLines) && (j < this.bulk) ; j++) {
+        const line = lines[i++];
+        bulkLines.push(this._analyzeSingleLine(line, analyzedLines));
       }
-
-      if (!analyzedLine.error) {
-        try {
-          const response = await axios.get(line.url);
-          if (!this._isValid(response)) {
-            analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
-          }
-        } catch (err) {
-          analyzedLine.markInError('HTTP_ERROR', 'Unreachable HTTP resource');
-        } finally {
-          if (this.delay) {
-            await this._sleep(this.delay);
-          }
-        }
-      }
-
-      if (!analyzedLine.error) {
-        analyzedLine.markInSuccess();
-      }
-
-      analyzedLines.push(analyzedLine);
-
-      if (!analyzedLine.error) {
-        logger.info(chalk.cyan(`${analyzedLine.index}.`) + ' ' + chalk.green(`${analyzedLine.raw}`));
-      } else {
-        logger.info(chalk.cyan(`${analyzedLine.index}.`) + ' ' + chalk.red(`${analyzedLine.raw}`) + ' ' + chalk.yellow(`[${analyzedLine.error}]`));
-      }
-
+      await Promise.all(bulkLines);
     }
 
     logger.info();

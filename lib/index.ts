@@ -11,11 +11,12 @@ program.version('0.0.1');
 
 program
   .argument('<file>', 'file to analyze')
+  .option('-b --bulk <bulk>', 'number of concurrent line analysis in parallel')
   .option('-d --delay <delay>', 'delay between two HTTP call')
-  .option('--from <from>', 'line from')
-  .option('--to <to>', 'line to')
+  .option('-f --from <from>', 'line from')
   .option('-o --output <output>', 'output file')
   .option('-s --separator <separator>', 'column separator')
+  .option('-t --to <to>', 'line to')
 ;
 
 program.parse(process.argv);
@@ -28,10 +29,11 @@ async function main() {
   logger.info('--------------------------------------------------------------------------------');
   logger.info('Options:');
   logger.info(`  file: ${file}`);
+  logger.info(`  bulk: ${options.bulk}`);
   logger.info(`  delay: ${options.delay}`);
+  logger.info(`  from: ${options.from}`);
   logger.info(`  output: ${options.output}`);
   logger.info(`  separator: ${options.separator}`);
-  logger.info(`  from: ${options.from}`);
   logger.info(`  to: ${options.to}`);
   logger.info();
 
