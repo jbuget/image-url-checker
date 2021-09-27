@@ -50,7 +50,7 @@ export default class Analyzer {
 
     if (!analyzedLine.error) {
       try {
-        const response = await axios.get(line.url);
+        const response = await axios.head(line.url);
         if (!this._isValid(response)) {
           analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
         }
