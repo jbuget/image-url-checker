@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 import {Command} from 'commander';
-import AnalyzedLine from './analyzing/AnalyzedLine.js';
-import Analyzer from './analyzing/Analyzer.js';
-import Line from './parsing/Line.js';
-import Parser from './parsing/Parser.js';
-import Reporter from './reporting/Reporter.js';
-import { logger} from './tools/Logger.js';
+import AnalyzedLine from './analyzing/AnalyzedLine';
+import Analyzer from './analyzing/Analyzer';
+import Line from './parsing/Line';
+import Parser from './parsing/Parser';
+import Reporter from './reporting/Reporter';
+import { logger} from './tools/Logger';
 
 const program = new Command();
 program.version('0.0.1');
@@ -34,6 +34,7 @@ async function main() {
   logger.info(`  - bulk: ${options.bulk}`);
   logger.info(`  - delay: ${options.delay}`);
   logger.info(`  - from: ${options.from}`);
+  logger.info(`  - headers: ${options.headers}`);
   logger.info(`  - output: ${options.output}`);
   logger.info(`  - separator: ${options.separator}`);
   logger.info(`  - to: ${options.to}`);

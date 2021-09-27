@@ -2,8 +2,8 @@ import chalk from 'chalk';
 import {createReadStream} from 'fs';
 import readline from 'readline';
 import {OptionValues} from 'commander';
-import Line from './Line.js';
-import { logger } from '../tools/Logger.js';
+import Line from './Line';
+import { logger } from '../tools/Logger';
 
 export default class Parser {
 

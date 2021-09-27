@@ -1,7 +1,7 @@
-import {createWriteStream} from 'fs';
-import AnalyzedLine from '../analyzing/AnalyzedLine.js';
 import {OptionValues} from 'commander';
-import { logger } from '../tools/Logger.js';
+import {createWriteStream} from 'fs';
+import AnalyzedLine from '../analyzing/AnalyzedLine';
+import { logger } from '../tools/Logger';
 
 export default class Reporter {
 

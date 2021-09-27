@@ -1,10 +1,11 @@
 import axios, {AxiosResponse} from 'axios';
 import chalk from 'chalk';
-import {URL} from 'url';
-import Line from '../parsing/Line.js';
-import AnalyzedLine from './AnalyzedLine.js';
 import {OptionValues} from 'commander';
-import {logger} from '../tools/Logger.js';
+import pMap from 'p-map';
+import {URL} from 'url';
+import Line from '../parsing/Line';
+import AnalyzedLine from './AnalyzedLine';
+import {logger} from '../tools/Logger';
 
 export default class Analyzer {
 
@@ -15,7 +16,7 @@ export default class Analyzer {
 
   constructor(options: OptionValues) {
     this._options = options;
-    this.bulk = options.bulk || 10;
+    this.bulk = parseInt(options.bulk) || 10;
     this.delay = options.delay;
   }
 
@@ -51,6 +52,7 @@ export default class Analyzer {
     if (!analyzedLine.error) {
       try {
         const response = await axios.head(line.url);
+
         if (!this._isValid(response)) {
           analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
         }
@@ -88,15 +90,7 @@ export default class Analyzer {
 
     const analyzedLines: AnalyzedLine[] = [];
 
-    let i: number = 0, nbLines: number = lines.length;
-    while (i < nbLines) {
-      const bulkLines = []
-      for (let j: number = 0 ; (i < nbLines) && (j < this.bulk) ; j++) {
-        const line = lines[i++];
-        bulkLines.push(this._analyzeSingleLine(line, analyzedLines));
-      }
-      await Promise.all(bulkLines);
-    }
+    await pMap(lines, (line) => this._analyzeSingleLine(line, analyzedLines), {concurrency: this.bulk});
 
     logger.info();
     const hrEnd: [number, number] = process.hrtime(hrStart);

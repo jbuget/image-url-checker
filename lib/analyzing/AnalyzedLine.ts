@@ -1,4 +1,4 @@
-import Line from '../parsing/Line.js';
+import Line from '../parsing/Line';
 
 export default class AnalyzedLine extends Line {
   status: string;
