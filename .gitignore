@@ -4,3 +4,4 @@ tmp
 reports
 *.csv
 build
+test/**/*.test.js

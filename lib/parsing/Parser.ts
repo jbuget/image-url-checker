@@ -32,7 +32,7 @@ export default class Parser {
 
       const hrStart: [number, number] = process.hrtime();
 
-      let index: number = 1;
+      let index = 1;
       const lines: Line[] = [];
 
       const rl = readline.createInterface({
@@ -40,17 +40,14 @@ export default class Parser {
       });
 
       rl.on('line', (rawLine) => {
-        let reference: string, url: string;
-        [reference, url] = rawLine.split(this.separator);
-
-        let mustAddLine: boolean = true;
+        let mustAddLine = true;
 
         if (this.from && index < this.from) mustAddLine = mustAddLine && false;
         if (this.to && index > this.to) mustAddLine = mustAddLine && false;
 
         if (mustAddLine) {
           logger.info(`  ${rawLine}`);
-          const line = new Line(index, rawLine, reference, url);
+          const line = new Line(index, rawLine, this.separator);
           lines.push(line);
         } else {
           logger.info(`  ${chalk.gray(rawLine)}`);
