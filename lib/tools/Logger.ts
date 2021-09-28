@@ -8,6 +8,7 @@ export default class Logger {
     this._logger = new TSLogger({
       displayFilePath: 'hidden',
       displayFunctionName: false,
+      suppressStdOutput: process.env['NODE_ENV'] === 'test'
     });
   }
 
