@@ -33,7 +33,7 @@ describe('#parse', () => {
     const parser = new Parser({});
 
     // when
-    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv`);
+    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
 
     // then
     expect(lines.length).toBe(5);
@@ -44,7 +44,7 @@ describe('#parse', () => {
     const parser = new Parser({});
 
     // when
-    const lines: Line[] = await parser.parse(`${__dirname}/test_blank_or_empty_lines.csv`);
+    const lines: Line[] = await parser.parse(`${__dirname}/test_blank_or_empty_lines.csv.fixture`);
 
     // then
     expect(lines.length).toBe(3);
@@ -55,7 +55,7 @@ describe('#parse', () => {
     const parser = new Parser({from: 2});
 
     // when
-    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv`);
+    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
 
     // then
     expect(lines.length).toBe(4);
@@ -66,7 +66,7 @@ describe('#parse', () => {
     const parser = new Parser({from: 3});
 
     // when
-    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv`);
+    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
 
     // then
     expect(lines.length).toBe(3);
@@ -77,7 +77,7 @@ describe('#parse', () => {
     const parser = new Parser({from: 3, to: 4});
 
     // when
-    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv`);
+    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
 
     // then
     expect(lines.length).toBe(2);
