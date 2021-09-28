@@ -1,4 +1,4 @@
-import Line from '../lib/parsing/Line';
+import Line from '../../lib/parsing/Line';
 
 test('Constructor', () => {
   // given

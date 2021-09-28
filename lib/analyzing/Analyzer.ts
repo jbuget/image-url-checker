@@ -20,7 +20,7 @@ export default class Analyzer {
     this.delay = options.delay;
   }
 
-  async _sleep(ms: number) {
+  _sleep(ms: number): Promise<void> {
     return new Promise((resolve) => {
       setTimeout(resolve, ms);
     });
@@ -38,7 +38,7 @@ export default class Analyzer {
     return response.headers['content-type'].trim().toLowerCase().startsWith('image/');
   }
 
-  async _analyzeSingleLine(line: Line, analyzedLines: AnalyzedLine[]): Promise<void> {
+  async _analyzeSingleLine(line: Line, analyzedLines: AnalyzedLine[]): Promise<AnalyzedLine> {
     const analyzedLine = new AnalyzedLine(line);
 
     if (!analyzedLine.error) {
@@ -76,6 +76,8 @@ export default class Analyzer {
     } else {
       logger.info(chalk.cyan(`${analyzedLine.index}.`) + ' ' + chalk.red(`${analyzedLine.raw}`) + ' ' + chalk.yellow(`[${analyzedLine.error}]`));
     }
+
+    return analyzedLine;
   }
 
   async analyze(lines: Line[]): Promise<AnalyzedLine[]> {
