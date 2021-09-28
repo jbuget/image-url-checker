@@ -9,7 +9,7 @@ import Reporter from './reporting/Reporter';
 import { logger} from './tools/Logger';
 
 const program = new Command();
-program.version('0.0.1');
+program.version('0.5.2');
 
 program
   .argument('<file>', 'file to analyze')
@@ -52,4 +52,4 @@ async function main() {
   process.exit(0);
 }
 
-main()
+main();
