@@ -40,17 +40,20 @@ export default class Parser {
       });
 
       rl.on('line', (rawLine) => {
+        const trimmedLine = rawLine.trim();
+
         let mustAddLine = true;
 
+        mustAddLine = (trimmedLine !== '');
         if (this.from && index < this.from) mustAddLine = mustAddLine && false;
         if (this.to && index > this.to) mustAddLine = mustAddLine && false;
 
         if (mustAddLine) {
-          logger.info(`  ${rawLine}`);
-          const line = new Line(index, rawLine, this.separator);
+          logger.info(`${chalk.cyan(index)}. ${trimmedLine}`);
+          const line = new Line(index, trimmedLine, this.separator);
           lines.push(line);
         } else {
-          logger.info(`  ${chalk.gray(rawLine)}`);
+          logger.info(`${chalk.gray(index + '. ' + trimmedLine)}`);
         }
 
         index++;
