@@ -6,7 +6,7 @@ export default class AnalyzedLine extends Line {
   comments: string[];
 
   constructor(line: Line) {
-    super(line.index, line.raw, line.reference, line.url);
+    super(line.index, line.raw, line.separator);
     this.status = '-';
     this.comments = [];
   }
