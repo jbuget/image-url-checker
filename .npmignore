@@ -4,3 +4,4 @@ tmp
 .idea
 *.tmp
 test/**/*.test.js
+coverage
