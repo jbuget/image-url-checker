@@ -1,39 +1,22 @@
 # image-url-checker
 
-## Installation
-
-Pré-requis : disposer d'une version opérationnelle de Node.js/npm sur son poste
-* Node v14+ (recommended v14.17.6)
-* npm 6+ (recommended v6.14.15)
-
-Récupérer les sources : 
-``` 
-git clone https://github.com/jbuget/image-url-checker.git 
-```
-
-Se rendre dans le répertoire source : 
-```
-cd image-url-checker
-```
-
-Télécharger les dépendances : 
-```
-npm install
-```
-
-Compiler les sources : 
-``` 
-npm build
-```
-
-Exécuter le programme : 
-```
-node dist/index.js [-d ";"] [-o "output.txt"] file
-```
+A small Node.js tool & library that checks image URL from a given CSV input file and report the analysis results in a new CSV output file. 
 
 ## Usage
 
-### Options
+### Prerequisites
+
+You need a working version of:
+* Node v14+ (recommended v14.17.6)
+* npm 6+ (recommended v6.14.15)
+
+### As a tool
+
+```bash
+npx image-url-checker -o output_file.csv input_file.csv
+```
+
+**Options:**
 
 | option | description | default value |
 | ------ | ----------- | ------------- |
@@ -44,7 +27,7 @@ node dist/index.js [-d ";"] [-o "output.txt"] file
 | -o --ouput _filepath_ | ouput file path | None |
 | -f --to _number_ | line "to" | None |
 
-### Input file
+**Input file:**
 
 Supported file extension: `.csv`
 
@@ -53,7 +36,20 @@ Supported data format (without head line):
 <reference>;<url>
 ```
 
-### Output
+**Output file:**
 
 ![Screenshot](docs/image-url-checker_screenshot.png)
 
+### As a library
+
+```bash
+npm install image-url-checker
+```
+
+```javascript
+import Program from './Program';
+
+const program = new Program();
+
+program.run('my-app -o output_file.csv input_file.csv').then(() => process.exit(0));
+```
