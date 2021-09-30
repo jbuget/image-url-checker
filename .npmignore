@@ -1,7 +1,13 @@
-build
-tmp
 *.log
-.idea
 *.tmp
-test/**/*.test.js
+.eslintrc.js
+.github
+.idea
+build
 coverage
+data
+docs
+jest.config.js
+test
+tmp
+tsconfig.json
