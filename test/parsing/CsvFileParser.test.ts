@@ -1,5 +1,5 @@
-import Parser from '../../lib/parsing/Parser';
 import Line from '../../lib/parsing/Line';
+import CsvFileParser from '../../lib/parsing/CsvFileParser';
 
 describe('Constructor', () => {
 
@@ -8,7 +8,7 @@ describe('Constructor', () => {
     const options = {};
 
     // when
-    const parser = new Parser(options);
+    const parser = new CsvFileParser(options);
 
     // then
     expect(parser.separator).toBe(';');
@@ -19,7 +19,7 @@ describe('Constructor', () => {
     const options = {separator: '/'};
 
     // when
-    const parser = new Parser(options);
+    const parser = new CsvFileParser(options);
 
     // then
     expect(parser.separator).toBe('/');
@@ -30,7 +30,7 @@ describe('#parse', () => {
 
   test('should return as many Line objects as file lines', async () => {
     // given
-    const parser = new Parser({});
+    const parser = new CsvFileParser({});
 
     // when
     const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
@@ -41,7 +41,7 @@ describe('#parse', () => {
 
   test('should ignore blank or empty lines', async () => {
     // given
-    const parser = new Parser({});
+    const parser = new CsvFileParser({});
 
     // when
     const lines: Line[] = await parser.parse(`${__dirname}/test_blank_or_empty_lines.csv.fixture`);
@@ -52,7 +52,7 @@ describe('#parse', () => {
 
   test('should take into account "--from" option', async () => {
     // given
-    const parser = new Parser({from: 2});
+    const parser = new CsvFileParser({from: 2});
 
     // when
     const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
@@ -63,7 +63,7 @@ describe('#parse', () => {
 
   test('should take into account "--to" option', async () => {
     // given
-    const parser = new Parser({from: 3});
+    const parser = new CsvFileParser({from: 3});
 
     // when
     const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
@@ -74,7 +74,7 @@ describe('#parse', () => {
 
   test('should support "--from" and "--to" options simultaneously', async () => {
     // given
-    const parser = new Parser({from: 3, to: 4});
+    const parser = new CsvFileParser({from: 3, to: 4});
 
     // when
     const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);

@@ -1,11 +1,11 @@
 import {Command} from 'commander';
 import {logger} from './tools/Logger';
-import Parser from './parsing/Parser';
 import Line from './parsing/Line';
 import Analyzer from './analyzing/Analyzer';
 import AnalyzedLine from './analyzing/AnalyzedLine';
 import Reporter from './reporting/Reporter';
 import {LIB_VERSION} from './version';
+import CsvFileParser from './parsing/CsvFileParser';
 
 export default class Program {
 
@@ -47,7 +47,7 @@ export default class Program {
     logger.info(`  - to: ${options.to}`);
     logger.info();
 
-    const parser = new Parser(options);
+    const parser = new CsvFileParser(options);
     const lines: Line[] = await parser.parse(file);
 
     const analyzer = new Analyzer(options);
