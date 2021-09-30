@@ -7,6 +7,7 @@ class Logger {
         this._logger = new tslog_1.Logger({
             displayFilePath: 'hidden',
             displayFunctionName: false,
+            suppressStdOutput: process.env['NODE_ENV'] === 'test'
         });
     }
     info(...args) {
@@ -19,4 +20,3 @@ class Logger {
 exports.default = Logger;
 const logger = new Logger();
 exports.logger = logger;
-//# sourceMappingURL=Logger.js.map

@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Line {
-    constructor(index, raw, reference, url) {
+    constructor(index, rawLine, separator) {
         this.index = index;
-        this.raw = raw;
+        this.raw = rawLine;
+        this.separator = separator;
+        const [reference, url] = rawLine.split(this.separator);
         this.reference = reference;
         this.url = url;
     }
 }
 exports.default = Line;
-//# sourceMappingURL=Line.js.map

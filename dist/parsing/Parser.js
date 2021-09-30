@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = __importDefault(require("chalk"));
 const fs_1 = require("fs");
 const readline_1 = __importDefault(require("readline"));
-const Line_js_1 = __importDefault(require("./Line.js"));
-const Logger_js_1 = require("../tools/Logger.js");
+const Line_1 = __importDefault(require("./Line"));
+const Logger_1 = require("../tools/Logger");
 class Parser {
     constructor(options) {
         this._options = options;
@@ -17,13 +17,13 @@ class Parser {
     }
     parse(file) {
         return new Promise((resolve, reject) => {
-            Logger_js_1.logger.info('--------------------------------------------------------------------------------');
-            Logger_js_1.logger.info('Phase: "Parsing"');
-            Logger_js_1.logger.info(` - file: ${file}`);
-            Logger_js_1.logger.info(` - from: ${this.from}`);
-            Logger_js_1.logger.info(` - separator: ${this.separator}`);
-            Logger_js_1.logger.info(` - to: ${this.to}`);
-            Logger_js_1.logger.info();
+            Logger_1.logger.info('--------------------------------------------------------------------------------');
+            Logger_1.logger.info('Phase: "Parsing"');
+            Logger_1.logger.info(` - file: ${file}`);
+            Logger_1.logger.info(` - from: ${this.from}`);
+            Logger_1.logger.info(` - separator: ${this.separator}`);
+            Logger_1.logger.info(` - to: ${this.to}`);
+            Logger_1.logger.info();
             const hrStart = process.hrtime();
             let index = 1;
             const lines = [];
@@ -31,32 +31,31 @@ class Parser {
                 input: (0, fs_1.createReadStream)(file),
             });
             rl.on('line', (rawLine) => {
-                let reference, url;
-                [reference, url] = rawLine.split(this.separator);
+                const trimmedLine = rawLine.trim();
                 let mustAddLine = true;
+                mustAddLine = (trimmedLine !== '');
                 if (this.from && index < this.from)
                     mustAddLine = mustAddLine && false;
                 if (this.to && index > this.to)
                     mustAddLine = mustAddLine && false;
                 if (mustAddLine) {
-                    Logger_js_1.logger.info(`  ${rawLine}`);
-                    const line = new Line_js_1.default(index, rawLine, reference, url);
+                    Logger_1.logger.info(`${chalk_1.default.cyan(index)}. ${trimmedLine}`);
+                    const line = new Line_1.default(index, trimmedLine, this.separator);
                     lines.push(line);
                 }
                 else {
-                    Logger_js_1.logger.info(`  ${chalk_1.default.gray(rawLine)}`);
+                    Logger_1.logger.info(`${chalk_1.default.gray(index + '. ' + trimmedLine)}`);
                 }
                 index++;
             });
             rl.on('close', () => {
-                Logger_js_1.logger.info();
+                Logger_1.logger.info();
                 const hrEnd = process.hrtime(hrStart);
-                Logger_js_1.logger.info(`Execution time (hr): ${hrEnd[0]}s ${hrEnd[1] / 1000000}ms`);
-                Logger_js_1.logger.info();
+                Logger_1.logger.info(`Execution time (hr): ${hrEnd[0]}s ${hrEnd[1] / 1000000}ms`);
+                Logger_1.logger.info();
                 resolve(lines);
             });
         });
     }
 }
 exports.default = Parser;
-//# sourceMappingURL=Parser.js.map
