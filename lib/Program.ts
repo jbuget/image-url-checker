@@ -5,16 +5,17 @@ import Line from './parsing/Line';
 import Analyzer from './analyzing/Analyzer';
 import AnalyzedLine from './analyzing/AnalyzedLine';
 import Reporter from './reporting/Reporter';
+import {LIB_VERSION} from './version';
 
 export default class Program {
 
   private readonly _version: string;
   private readonly _command: Command;
 
-  constructor(version: string) {
-    this._version = version;
+  constructor() {
+    this._version = LIB_VERSION;
     this._command = new Command();
-    this._command.version(version);
+    this._command.version(this._version);
     this._command
       .argument('<file>', 'file to analyze')
       .option('-b --bulk <bulk>', 'number of concurrent line analysis in parallel')

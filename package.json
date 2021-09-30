@@ -14,7 +14,7 @@
     "version": "npm run dist && git add -A dist lib/version.ts",
     "postversion": "git push && git push --tags",
     "start": "node build/index",
-    "test": "jest",
+    "test": "npm run build && jest",
     "test:ci": "NODE_ENV=test jest --coverage false"
   },
   "pkg": {
