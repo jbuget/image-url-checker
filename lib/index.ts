@@ -1,12 +1,9 @@
 #!/usr/bin/env node
 
-import fs from 'fs';
+import {LIB_VERSION} from './version';
 import Program from './Program';
 
-const version = fs.readFileSync(`${__dirname}/version.txt`, 'utf-8').trim();
-
-const program = new Program(version);
+const program = new Program(LIB_VERSION);
 
 program.run(process.argv).then(() => process.exit(0));
-
 

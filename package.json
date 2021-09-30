@@ -7,7 +7,8 @@
     "image-url-checker": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc && cp ./lib/version.txt ./build",
+    "prebuild": "node -p \"'export const LIB_VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > lib/version.ts",
+    "build": "tsc",
     "package": "rm -rf dist && npm run build && cp -R build dist && pkg . --output dist/image-url-checker",
     "publish:major": "npm run package && git add dist && git commit -m 'Package a new binary' && npm version major && npm publish && git push && git push --tags",
     "publish:minor": "npm run package && git add dist && git commit -m 'Package a new binary' && npm version minor && npm publish && git push && git push --tags",
