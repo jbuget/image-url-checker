@@ -20,6 +20,7 @@
   "pkg": {
     "scripts": "dist/**/*.js"
   },
+  "files": ["dist", "lib", "*.md"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jbuget/image-url-checker.git"
