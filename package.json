@@ -1,6 +1,6 @@
 {
   "name": "image-url-checker",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Node images URL checker",
   "main": "index.js",
   "bin": {
@@ -20,7 +20,11 @@
   "pkg": {
     "scripts": "dist/**/*.js"
   },
-  "files": ["dist", "lib", "*.md"],
+  "files": [
+    "dist",
+    "lib",
+    "*.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jbuget/image-url-checker.git"
