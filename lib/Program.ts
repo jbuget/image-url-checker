@@ -1,16 +1,14 @@
-import {Command} from 'commander';
+import { Command } from 'commander';
 import AnalyzedLine from './analyzing/AnalyzedLine';
 import Analyzer from './analyzing/Analyzer';
 import CsvFileParser from './parsing/CsvFileParser';
 import Line from './parsing/Line';
 import CsvFileReporter from './reporting/CsvFileReporter';
-import {logger} from './tools/Logger';
-import {LIB_VERSION} from './version';
-import Reporter from './reporting/Reporter';
+import { logger } from './tools/Logger';
+import { LIB_VERSION } from './version';
 import ConsoleReporter from './reporting/ConsoleReporter';
 
 export default class Program {
-
   private readonly _version: string;
   private readonly _command: Command;
 
@@ -25,8 +23,7 @@ export default class Program {
       .option('-f --from <from>', 'line from')
       .option('-o --output <output>', 'output file')
       .option('-s --separator <separator>', 'column separator')
-      .option('-t --to <to>', 'line to')
-    ;
+      .option('-t --to <to>', 'line to');
   }
 
   async run(argv: string[]): Promise<void> {
