@@ -43,7 +43,7 @@ describe('#report', () => {
 
     // then
     const printedLines: string[] = fs.readFileSync(output).toString().split('\n');
-    expect(printedLines.length).toBe(3);
+    expect(printedLines.length).toBe(4);
     expect(printedLines[0]).toBe('ref_1;https://site.com/image-1;OK');
     expect(printedLines[1]).toBe('ref_2;https://site.com/image-2;KO;FORMAT_ERROR;Not an URL');
     expect(printedLines[2]).toBe('ref_3;https://site.com/image-3;KO;HTTP_ERROR;Not an image');
