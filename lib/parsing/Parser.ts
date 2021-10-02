@@ -1,5 +1,4 @@
 import { OptionValues } from 'commander';
-import { PathLike } from 'fs';
 import Line from './Line';
 import { logger } from '../tools/Logger';
 
@@ -21,12 +20,11 @@ export abstract class AbstractParser implements Parser {
     this.to = options.to;
   }
 
-  protected abstract extractLines(file: PathLike): Promise<Line[]>;
+  protected abstract extractLines(): Promise<Line[]>;
 
-  async parse(file: PathLike): Promise<Line[]> {
+  async parse(): Promise<Line[]> {
     logger.info('--------------------------------------------------------------------------------');
     logger.info('Phase: "Parsing"');
-    logger.info(` - file: ${file}`);
     logger.info(` - from: ${this.from}`);
     logger.info(` - separator: ${this.separator}`);
     logger.info(` - to: ${this.to}`);
@@ -34,7 +32,7 @@ export abstract class AbstractParser implements Parser {
 
     const hrStart: [number, number] = process.hrtime();
 
-    const lines = await this.extractLines(file);
+    const lines = await this.extractLines();
 
     logger.info();
     const hrEnd: [number, number] = process.hrtime(hrStart);

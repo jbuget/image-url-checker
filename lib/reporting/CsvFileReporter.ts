@@ -9,7 +9,7 @@ export default class CsvFileReporter extends AbstractReporter {
 
   constructor(options: OptionValues) {
     super(options);
-    this.output = options.output;
+    this.output = options.output_file;
   }
 
   writeOutputLines(analyzedLines: AnalyzedLine[]): Promise<void> {
