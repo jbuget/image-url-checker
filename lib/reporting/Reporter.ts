@@ -1,5 +1,6 @@
 import {OptionValues} from 'commander';
 import AnalyzedLine from '../analyzing/AnalyzedLine';
+import {logger} from '../tools/Logger';
 
 export default interface Reporter {
 
@@ -14,5 +15,22 @@ export abstract class AbstractReporter implements Reporter {
     this._options = options;
   }
 
-  abstract report(analyzedLines: AnalyzedLine[]): Promise<void>;
+  protected abstract writeOutputLines(analyzedLines: AnalyzedLine[]): Promise<void>;
+
+  async report(analyzedLines: AnalyzedLine[]): Promise<void> {
+    logger.info('--------------------------------------------------------------------------------');
+    logger.info('Phase: "Reporting"');
+    logger.info(`  - analyzed lines: ${analyzedLines.length}`);
+    logger.info();
+
+    const hrStart: [number, number] = process.hrtime();
+
+    analyzedLines.sort((a, b) => (a.index - b.index));
+
+    await this.writeOutputLines(analyzedLines)
+
+    const hrEnd: [number, number] = process.hrtime(hrStart);
+    logger.info(`Execution time (hr): ${hrEnd[0]}s ${hrEnd[1] / 1000000}ms`);
+    logger.info();
+  }
 }
