@@ -15,10 +15,9 @@ export default class AnalyzedLine extends Line {
     this.status = 'OK';
   }
 
-  markInError(errorType: string, errorMessage: string):void {
+  markInError(errorType: string, errorMessage: string): void {
     this.status = 'KO';
     this.error = errorType;
     this.comments.push(errorMessage);
   }
-
 }

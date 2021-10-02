@@ -1,13 +1,12 @@
-import {AbstractParser} from './Parser';
-import {OptionValues} from 'commander';
+import { AbstractParser } from './Parser';
+import { OptionValues } from 'commander';
 import Line from './Line';
-import {logger} from '../tools/Logger';
+import { logger } from '../tools/Logger';
 import readline from 'readline';
-import {createReadStream, PathLike} from 'fs';
+import { createReadStream, PathLike } from 'fs';
 import chalk from 'chalk';
 
 export default class CsvFileParser extends AbstractParser {
-
   constructor(options: OptionValues) {
     super(options);
   }
@@ -18,15 +17,15 @@ export default class CsvFileParser extends AbstractParser {
       const lines: Line[] = [];
 
       const rl = readline.createInterface({
-        input: createReadStream(file),
+        input: createReadStream(file)
       });
 
       rl.on('line', (rawLine) => {
         const trimmedLine = rawLine.trim();
 
-        let mustAddLine = true;
+        let mustAddLine: boolean;
 
-        mustAddLine = (trimmedLine !== '');
+        mustAddLine = trimmedLine !== '';
         if (this.from && index < this.from) mustAddLine = mustAddLine && false;
         if (this.to && index > this.to) mustAddLine = mustAddLine && false;
 

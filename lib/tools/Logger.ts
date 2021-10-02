@@ -1,7 +1,6 @@
-import { Logger as TSLogger } from 'tslog';
+import {Logger as TSLogger} from 'tslog';
 
 export default class Logger {
-
   private readonly _logger: TSLogger;
 
   constructor() {
@@ -12,15 +11,15 @@ export default class Logger {
     });
   }
 
-  info(...args: any[]) {
+  info(...args: unknown[]): void {
     this._logger.info(...args);
   }
 
-  error(...args: any[]) {
+  error(...args: unknown[]): void {
     this._logger.error(...args);
   }
 }
 
 const logger = new Logger();
 
-export { logger };
+export {logger};

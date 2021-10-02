@@ -1,10 +1,9 @@
 import AnalyzedLine from '../analyzing/AnalyzedLine';
-import {AbstractReporter} from './Reporter';
-import {OptionValues} from 'commander';
-import {logger} from '../tools/Logger';
+import { AbstractReporter } from './Reporter';
+import { OptionValues } from 'commander';
+import { logger } from '../tools/Logger';
 
 export default class ConsoleReporter extends AbstractReporter {
-
   constructor(options: OptionValues) {
     super(options);
   }

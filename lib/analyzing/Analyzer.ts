@@ -1,14 +1,13 @@
-import axios, {AxiosResponse} from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import chalk from 'chalk';
-import {OptionValues} from 'commander';
+import { OptionValues } from 'commander';
 import pMap from 'p-map';
-import {URL} from 'url';
+import { URL } from 'url';
 import Line from '../parsing/Line';
 import AnalyzedLine from './AnalyzedLine';
-import {logger} from '../tools/Logger';
+import { logger } from '../tools/Logger';
 
 export default class Analyzer {
-
   private readonly _options: OptionValues;
 
   bulk: number;
@@ -44,6 +43,7 @@ export default class Analyzer {
     if (!analyzedLine.error) {
       try {
         new URL(line.url);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         analyzedLine.markInError('FORMAT_ERROR', error.message);
       }
@@ -54,7 +54,10 @@ export default class Analyzer {
         const response = await axios.head(line.url);
 
         if (!this._isValid(response)) {
-          analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
+          analyzedLine.markInError(
+            'HTTP_ERROR',
+            'HTTP status is not 200(OK) or the response content type is not an image'
+          );
         }
       } catch (err) {
         analyzedLine.markInError('HTTP_ERROR', 'Unreachable HTTP resource');
@@ -74,7 +77,13 @@ export default class Analyzer {
     if (!analyzedLine.error) {
       logger.info(chalk.cyan(`${analyzedLine.index}.`) + ' ' + chalk.green(`${analyzedLine.raw}`));
     } else {
-      logger.info(chalk.cyan(`${analyzedLine.index}.`) + ' ' + chalk.red(`${analyzedLine.raw}`) + ' ' + chalk.yellow(`[${analyzedLine.error}]`));
+      logger.info(
+        chalk.cyan(`${analyzedLine.index}.`) +
+          ' ' +
+          chalk.red(`${analyzedLine.raw}`) +
+          ' ' +
+          chalk.yellow(`[${analyzedLine.error}]`)
+      );
     }
 
     return analyzedLine;
@@ -92,7 +101,7 @@ export default class Analyzer {
 
     const analyzedLines: AnalyzedLine[] = [];
 
-    await pMap(lines, (line) => this._analyzeSingleLine(line, analyzedLines), {concurrency: this.bulk});
+    await pMap(lines, (line) => this._analyzeSingleLine(line, analyzedLines), { concurrency: this.bulk });
 
     logger.info();
     const hrEnd: [number, number] = process.hrtime(hrStart);

@@ -1,15 +1,13 @@
-import {OptionValues} from 'commander';
-import {PathLike} from 'fs';
+import { OptionValues } from 'commander';
+import { PathLike } from 'fs';
 import Line from './Line';
-import {logger} from '../tools/Logger';
+import { logger } from '../tools/Logger';
 
 export default interface Parser {
-
   parse(file: string): Promise<Line[]>;
 }
 
 export abstract class AbstractParser implements Parser {
-
   protected readonly _options: OptionValues;
 
   separator: string;
