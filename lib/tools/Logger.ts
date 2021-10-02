@@ -1,4 +1,4 @@
-import {Logger as TSLogger} from 'tslog';
+import { Logger as TSLogger } from 'tslog';
 
 export default class Logger {
   private readonly _logger: TSLogger;
@@ -22,4 +22,4 @@ export default class Logger {
 
 const logger = new Logger();
 
-export {logger};
+export { logger };
