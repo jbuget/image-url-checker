@@ -1,11 +1,11 @@
 import {Command} from 'commander';
-import {logger} from './tools/Logger';
-import Line from './parsing/Line';
-import Analyzer from './analyzing/Analyzer';
 import AnalyzedLine from './analyzing/AnalyzedLine';
-import Reporter from './reporting/Reporter';
-import {LIB_VERSION} from './version';
+import Analyzer from './analyzing/Analyzer';
 import CsvFileParser from './parsing/CsvFileParser';
+import Line from './parsing/Line';
+import CsvFileReporter from './reporting/CsvFileReporter';
+import {logger} from './tools/Logger';
+import {LIB_VERSION} from './version';
 
 export default class Program {
 
@@ -53,7 +53,7 @@ export default class Program {
     const analyzer = new Analyzer(options);
     const analyzedLines: AnalyzedLine[] = await analyzer.analyze(lines);
 
-    const reporter: Reporter = new Reporter(options);
+    const reporter = new CsvFileReporter(options);
     await reporter.report(analyzedLines);
   }
 }
