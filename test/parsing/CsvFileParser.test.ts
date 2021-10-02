@@ -30,10 +30,10 @@ describe('#parse', () => {
 
   test('should return as many Line objects as file lines', async () => {
     // given
-    const parser = new CsvFileParser({});
+    const parser = new CsvFileParser({ input_file: `${__dirname}/test_simple.csv.fixture` });
 
     // when
-    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
+    const lines: Line[] = await parser.parse();
 
     // then
     expect(lines.length).toBe(5);
@@ -41,10 +41,10 @@ describe('#parse', () => {
 
   test('should ignore blank or empty lines', async () => {
     // given
-    const parser = new CsvFileParser({});
+    const parser = new CsvFileParser({ input_file: `${__dirname}/test_blank_or_empty_lines.csv.fixture` });
 
     // when
-    const lines: Line[] = await parser.parse(`${__dirname}/test_blank_or_empty_lines.csv.fixture`);
+    const lines: Line[] = await parser.parse();
 
     // then
     expect(lines.length).toBe(3);
@@ -52,10 +52,10 @@ describe('#parse', () => {
 
   test('should take into account "--from" option', async () => {
     // given
-    const parser = new CsvFileParser({from: 2});
+    const parser = new CsvFileParser({from: 2, input_file: `${__dirname}/test_simple.csv.fixture`});
 
     // when
-    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
+    const lines: Line[] = await parser.parse();
 
     // then
     expect(lines.length).toBe(4);
@@ -63,10 +63,10 @@ describe('#parse', () => {
 
   test('should take into account "--to" option', async () => {
     // given
-    const parser = new CsvFileParser({from: 3});
+    const parser = new CsvFileParser({from: 3, input_file: `${__dirname}/test_simple.csv.fixture`});
 
     // when
-    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
+    const lines: Line[] = await parser.parse();
 
     // then
     expect(lines.length).toBe(3);
@@ -74,10 +74,10 @@ describe('#parse', () => {
 
   test('should support "--from" and "--to" options simultaneously', async () => {
     // given
-    const parser = new CsvFileParser({from: 3, to: 4});
+    const parser = new CsvFileParser({from: 3, to: 4, input_file: `${__dirname}/test_simple.csv.fixture`});
 
     // when
-    const lines: Line[] = await parser.parse(`${__dirname}/test_simple.csv.fixture`);
+    const lines: Line[] = await parser.parse();
 
     // then
     expect(lines.length).toBe(2);

@@ -7,7 +7,7 @@ describe('Constructor', () => {
 
   test('should set output', () => {
     // given
-    const options = {output: `test_output.csv`};
+    const options = {output_file: `test_output.csv`};
 
     // when
     const reporter = new CsvFileReporter(options);
@@ -21,8 +21,8 @@ describe('#report', () => {
 
   test('should ', async () => {
     // given
-    const output = `${__dirname}/test_output.csv`;
-    const reporter = new CsvFileReporter({output});
+    const output_file = `${__dirname}/test_output.csv`;
+    const reporter = new CsvFileReporter({output_file});
 
     const line1 = new Line(1, 'ref_1;https://site.com/image-1', ';');
     const analyzedLine1 = new AnalyzedLine(line1);
@@ -42,7 +42,7 @@ describe('#report', () => {
     await reporter.report(analyzedLines);
 
     // then
-    const printedLines: string[] = fs.readFileSync(output).toString().split('\n');
+    const printedLines: string[] = fs.readFileSync(output_file).toString().split('\n');
     expect(printedLines.length).toBe(4);
     expect(printedLines[0]).toBe('ref_1;https://site.com/image-1;OK');
     expect(printedLines[1]).toBe('ref_2;https://site.com/image-2;KO;FORMAT_ERROR;Not an URL');

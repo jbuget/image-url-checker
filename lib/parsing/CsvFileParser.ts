@@ -7,17 +7,20 @@ import { createReadStream, PathLike } from 'fs';
 import chalk from 'chalk';
 
 export default class CsvFileParser extends AbstractParser {
+  input: PathLike;
+
   constructor(options: OptionValues) {
     super(options);
+    this.input = options.input_file;
   }
 
-  extractLines(file: PathLike): Promise<Line[]> {
+  extractLines(): Promise<Line[]> {
     return new Promise<Line[]>((resolve) => {
       let index = 1;
       const lines: Line[] = [];
 
       const rl = readline.createInterface({
-        input: createReadStream(file)
+        input: createReadStream(this.input)
       });
 
       rl.on('line', (rawLine) => {

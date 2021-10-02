@@ -17,11 +17,11 @@ export default class Program {
     this._command = new Command();
     this._command.version(this._version);
     this._command
-      .argument('<file>', 'file to analyze')
       .option('-b --bulk <bulk>', 'number of concurrent line analysis in parallel')
       .option('-d --delay <delay>', 'delay between two HTTP call')
       .option('-f --from <from>', 'line from')
-      .option('-o --output <output>', 'output file')
+      .requiredOption('-i --input <input_file>', 'file to analyze')
+      .option('-o --output <output_file>', 'output file')
       .option('-s --separator <separator>', 'column separator')
       .option('-t --to <to>', 'line to');
   }
@@ -31,23 +31,21 @@ export default class Program {
 
     const options = this._command.opts();
 
-    const file = this._command.args[0];
-
     logger.info('--------------------------------------------------------------------------------');
     logger.info(`Version: ${this._version}`);
     logger.info('Options:');
-    logger.info(`  - file: ${file}`);
+    logger.info(`  - input file: ${options.input_file}`);
     logger.info(`  - bulk: ${options.bulk}`);
     logger.info(`  - delay: ${options.delay}`);
     logger.info(`  - from: ${options.from}`);
     logger.info(`  - headers: ${options.headers}`);
-    logger.info(`  - output: ${options.output}`);
+    logger.info(`  - output: ${options.output_file}`);
     logger.info(`  - separator: ${options.separator}`);
     logger.info(`  - to: ${options.to}`);
     logger.info();
 
     const parser = new CsvFileParser(options);
-    const lines: Line[] = await parser.parse(file);
+    const lines: Line[] = await parser.parse();
 
     const analyzer = new Analyzer(options);
     const analyzedLines: AnalyzedLine[] = await analyzer.analyze(lines);
