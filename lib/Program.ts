@@ -17,13 +17,13 @@ export default class Program {
     this._command = new Command();
     this._command.version(this._version);
     this._command
-      .option('-b --bulk <bulk>', 'number of concurrent line analysis in parallel')
-      .option('-d --delay <delay>', 'delay between two HTTP call')
-      .option('-f --from <from>', 'line from')
-      .requiredOption('-i --input <input_file>', 'file to analyze')
-      .option('-o --output <output_file>', 'output file')
-      .option('-s --separator <separator>', 'column separator')
-      .option('-t --to <to>', 'line to');
+      .option('-b, --bulk <bulk>', 'number of concurrent line analysis in parallel')
+      .option('-d, --delay <delay>', 'delay between two HTTP call')
+      .option('-f, --from <from>', 'line from')
+      .requiredOption('-i, --input <input>', 'file to analyze')
+      .option('-o, --output <output>', 'output file')
+      .option('-s, --separator <separator>', 'column separator')
+      .option('-t, --to <to>', 'line to');
   }
 
   async run(argv: string[]): Promise<void> {
@@ -34,12 +34,12 @@ export default class Program {
     logger.info('--------------------------------------------------------------------------------');
     logger.info(`Version: ${this._version}`);
     logger.info('Options:');
-    logger.info(`  - input file: ${options.input_file}`);
+    logger.info(`  - input: ${options.input}`);
     logger.info(`  - bulk: ${options.bulk}`);
     logger.info(`  - delay: ${options.delay}`);
     logger.info(`  - from: ${options.from}`);
     logger.info(`  - headers: ${options.headers}`);
-    logger.info(`  - output: ${options.output_file}`);
+    logger.info(`  - output: ${options.output}`);
     logger.info(`  - separator: ${options.separator}`);
     logger.info(`  - to: ${options.to}`);
     logger.info();

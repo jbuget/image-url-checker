@@ -3,15 +3,15 @@ import { OptionValues } from 'commander';
 import Line from './Line';
 import { logger } from '../tools/Logger';
 import readline from 'readline';
-import { createReadStream, PathLike } from 'fs';
+import { createReadStream } from 'fs';
 import chalk from 'chalk';
 
 export default class CsvFileParser extends AbstractParser {
-  input: PathLike;
+  input: string;
 
   constructor(options: OptionValues) {
     super(options);
-    this.input = options.input_file;
+    this.input = options.input;
   }
 
   extractLines(): Promise<Line[]> {
