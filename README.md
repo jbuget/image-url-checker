@@ -13,7 +13,7 @@ You need a working version of:
 ### As a tool
 
 ```bash
-npx image-url-checker -o output_file.csv input_file.csv
+npx image-url-checker -i input_file.csv -o output_file.csv
 ```
 
 **Options:**
@@ -23,6 +23,7 @@ npx image-url-checker -o output_file.csv input_file.csv
 | -d --delay _number_ | delay (in ms) between two URL calls | None |
 | -b --bulk _number_ | number of concurrent HTTP calls during analysis phase | 10 |
 | -f --from _number_ | line "from" | None |
+| (required) -i --input _input_file_ | input file path | None |
 | -s --separator _character_ | column separator | ; |
 | -o --ouput _filepath_ | ouput file path | None |
 | -f --to _number_ | line "to" | None |
@@ -51,5 +52,5 @@ import Program from './Program';
 
 const program = new Program();
 
-program.run('my-app -o output_file.csv input_file.csv').then(() => process.exit(0));
+program.run('my-app -i input_file.csv -o output_file.csv').then(() => process.exit(0));
 ```
