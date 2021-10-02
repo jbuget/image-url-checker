@@ -6,6 +6,8 @@ import Line from './parsing/Line';
 import CsvFileReporter from './reporting/CsvFileReporter';
 import {logger} from './tools/Logger';
 import {LIB_VERSION} from './version';
+import Reporter from './reporting/Reporter';
+import ConsoleReporter from './reporting/ConsoleReporter';
 
 export default class Program {
 
@@ -53,7 +55,7 @@ export default class Program {
     const analyzer = new Analyzer(options);
     const analyzedLines: AnalyzedLine[] = await analyzer.analyze(lines);
 
-    const reporter = new CsvFileReporter(options);
+    const reporter = options.output ? new CsvFileReporter(options) : new ConsoleReporter(options);
     await reporter.report(analyzedLines);
   }
 }
