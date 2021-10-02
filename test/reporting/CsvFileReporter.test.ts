@@ -1,4 +1,4 @@
-import Reporter from '../../lib/reporting/Reporter';
+import CsvFileReporter from '../../lib/reporting/CsvFileReporter';
 import AnalyzedLine from '../../lib/analyzing/AnalyzedLine';
 import Line from '../../lib/parsing/Line';
 import * as fs from 'fs';
@@ -10,7 +10,7 @@ describe('Constructor', () => {
     const options = {output: `test_output.csv`};
 
     // when
-    const reporter = new Reporter(options);
+    const reporter = new CsvFileReporter(options);
 
     // then
     expect(reporter.output).toBe('test_output.csv');
@@ -22,7 +22,7 @@ describe('#report', () => {
   test('should ', async () => {
     // given
     const output = `${__dirname}/test_output.csv`;
-    const reporter = new Reporter({output});
+    const reporter = new CsvFileReporter({output});
 
     const line1 = new Line(1, 'ref_1;https://site.com/image-1', ';');
     const analyzedLine1 = new AnalyzedLine(line1);

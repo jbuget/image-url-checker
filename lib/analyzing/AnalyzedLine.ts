@@ -11,11 +11,11 @@ export default class AnalyzedLine extends Line {
     this.comments = [];
   }
 
-  markInSuccess() {
+  markInSuccess(): void {
     this.status = 'OK';
   }
 
-  markInError(errorType: string, errorMessage: string) {
+  markInError(errorType: string, errorMessage: string):void {
     this.status = 'KO';
     this.error = errorType;
     this.comments.push(errorMessage);
