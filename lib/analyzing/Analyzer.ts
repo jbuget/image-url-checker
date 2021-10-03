@@ -1,22 +1,30 @@
-import axios, { AxiosResponse } from 'axios';
 import chalk from 'chalk';
 import { OptionValues } from 'commander';
 import pMap from 'p-map';
 import { URL } from 'url';
 import Line from '../parsing/Line';
 import AnalyzedLine from './AnalyzedLine';
+import { HttpClient, HttpResponse } from '../tools/HttpClient';
 import { logger } from '../tools/Logger';
 
 export default class Analyzer {
   private readonly _options: OptionValues;
+  private readonly _httpClient: HttpClient;
 
   bulk: number;
   delay?: number;
+  headers?: any;
 
-  constructor(options: OptionValues) {
+  constructor(options: OptionValues, httpClient?: HttpClient) {
     this._options = options;
     this.bulk = parseInt(options.bulk) || 10;
     this.delay = options.delay;
+    this.headers = options.headers;
+
+    this._httpClient = httpClient || new HttpClient();
+    if (options.headers) {
+      this._httpClient.headers = options.headers;
+    }
   }
 
   _sleep(ms: number): Promise<void> {
@@ -25,15 +33,15 @@ export default class Analyzer {
     });
   }
 
-  _isValid(response: AxiosResponse): boolean {
+  _isValid(response: HttpResponse): boolean {
     return this._isStatusOk(response) && this._isAnImage(response);
   }
 
-  _isStatusOk(response: AxiosResponse): boolean {
-    return response.status === 200;
+  _isStatusOk(response: HttpResponse): boolean {
+    return response.statusCode === 200;
   }
 
-  _isAnImage(response: AxiosResponse): boolean {
+  _isAnImage(response: HttpResponse): boolean {
     return response.headers['content-type'].trim().toLowerCase().startsWith('image/');
   }
 
@@ -51,7 +59,7 @@ export default class Analyzer {
 
     if (!analyzedLine.error) {
       try {
-        const response = await axios.head(line.url);
+        const response = await this._httpClient.head(line.url);
 
         if (!this._isValid(response)) {
           analyzedLine.markInError(
@@ -95,6 +103,7 @@ export default class Analyzer {
     logger.info(`  - lines: ${lines.length}`);
     logger.info(`  - bulk: ${this.bulk}`);
     logger.info(`  - delay: ${this.delay}`);
+    logger.info(`  - headers: ${this.headers}`);
     logger.info();
 
     const hrStart: [number, number] = process.hrtime();

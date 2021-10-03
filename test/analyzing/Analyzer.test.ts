@@ -1,15 +1,37 @@
 import axios from 'axios';
-import {OptionValues} from 'commander';
+import { OptionValues } from 'commander';
 import Analyzer from '../../lib/analyzing/Analyzer';
 import Line from '../../lib/parsing/Line';
 import AnalyzedLine from '../../lib/analyzing/AnalyzedLine';
-import {logger} from '../../lib/tools/Logger';
+import { logger } from '../../lib/tools/Logger';
+import { HttpClient, HttpResponse } from '../../lib/tools/HttpClient';
 
 jest.mock('axios');
-jest.mock('../../lib/tools/Logger');
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+class TestingHttpClient extends HttpClient {
+
+  private readonly _mockedHead;
+
+  constructor(mockedHead: jest.Mock) {
+    super();
+    this._mockedHead = mockedHead;
+  }
+
+  async head(url: string): Promise<HttpResponse> {
+    const response = await this._mockedHead();
+    return new HttpResponse(response);
+  }
+
+}
+
+jest.mock('../../lib/tools/Logger');
+
 const mockedLogger = logger as jest.Mocked<typeof logger>;
+
+const mockedHead = jest.fn();
+const mockedHttpClient = new TestingHttpClient(mockedHead);
 
 describe('#constructor', () => {
 
@@ -31,7 +53,7 @@ describe('#_analyzeSingleLine', () => {
   let analyzedLines: AnalyzedLine[];
 
   beforeEach(() => {
-    analyzer = new Analyzer({});
+    analyzer = new Analyzer({}, mockedHttpClient);
     analyzedLines = [];
   });
 
@@ -42,12 +64,9 @@ describe('#_analyzeSingleLine', () => {
     beforeEach(() => {
       line = new Line(1, 'rec123;http://url.com/image.jpeg', ';');
 
-      mockedAxios.head.mockResolvedValue({
-        data: null,
+      mockedHead.mockResolvedValue({
         status: 200,
-        statusText: 'OK',
         headers: {'content-type': 'image/jpeg'},
-        config: {}
       });
     });
 
@@ -108,12 +127,9 @@ describe('#_analyzeSingleLine', () => {
     test('should mark line in error when resource is not accessible', async () => {
       // given
       const line = new Line(1, 'rec123;http://not.found/image.jpeg', ';');
-      mockedAxios.head.mockResolvedValue({
-        data: null,
+      mockedHead.mockResolvedValue({
         status: 404,
-        statusText: 'Not Found',
         headers: {'content-length': 0},
-        config: {}
       });
 
       // when
@@ -139,7 +155,7 @@ describe('#_analyzeSingleLine', () => {
     test('should mark line in error when HTTP request fails', async () => {
       // given
       const line = new Line(1, 'rec123;http://request.failed/image.jpeg', ';');
-      mockedAxios.head.mockRejectedValue(new Error());
+      mockedHead.mockRejectedValue(new Error());
 
       // when
       const actual: AnalyzedLine = await analyzer._analyzeSingleLine(line, analyzedLines);
@@ -149,6 +165,23 @@ describe('#_analyzeSingleLine', () => {
       expect(actual.error).toBe('HTTP_ERROR');
     });
   });
+
+  describe('when headers are defined', () => {
+
+    it('should make an HTTP request with given headers', async () => {
+      // given
+      const headers = {'Authorization': 'bearer some.jwt.token'};
+      analyzer = new Analyzer({headers});
+      const line = new Line(1, 'rec_1;http://image.url', ';');
+
+      // when
+      await analyzer._analyzeSingleLine(line, analyzedLines);
+
+      // then
+      expect(mockedAxios.head).toHaveBeenCalledWith('http://image.url', {headers});
+    });
+  });
+
 });
 
 describe('#analyze', () => {
@@ -161,12 +194,9 @@ describe('#analyze', () => {
       new Line(2, 'rec2;http://image.url/2', ';'),
       new Line(3, 'rec3;http://image.url/3', ';'),
     ]
-    mockedAxios.head.mockResolvedValue({
-      data: null,
+    mockedHead.mockResolvedValue({
       status: 200,
-      statusText: 'OK',
       headers: {'content-type': 'image/jpeg'},
-      config: {}
     });
 
     // when
@@ -176,3 +206,4 @@ describe('#analyze', () => {
     expect(actual.length).toBe(3);
   });
 });
+
