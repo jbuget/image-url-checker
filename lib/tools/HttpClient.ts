@@ -1,8 +1,16 @@
 import axios from 'axios';
 
 class HttpClient {
+  private _headers: any;
+
+  set headers(value: any) {
+    this._headers = value;
+  }
+
   async head(url: string): Promise<HttpResponse> {
-    const response = await axios.head(url);
+    let config;
+    if (this._headers) config = { headers: this._headers };
+    const response = config ? await axios.head(url, config) : await axios.head(url);
     return new HttpResponse(response);
   }
 }

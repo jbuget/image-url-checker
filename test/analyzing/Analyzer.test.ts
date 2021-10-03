@@ -1,9 +1,14 @@
+import axios from 'axios';
 import { OptionValues } from 'commander';
 import Analyzer from '../../lib/analyzing/Analyzer';
 import Line from '../../lib/parsing/Line';
 import AnalyzedLine from '../../lib/analyzing/AnalyzedLine';
 import { logger } from '../../lib/tools/Logger';
 import { HttpClient, HttpResponse } from '../../lib/tools/HttpClient';
+
+jest.mock('axios');
+
+const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 class TestingHttpClient extends HttpClient {
 
@@ -160,6 +165,23 @@ describe('#_analyzeSingleLine', () => {
       expect(actual.error).toBe('HTTP_ERROR');
     });
   });
+
+  describe('when headers are defined', () => {
+
+    it('should make an HTTP request with given headers', async () => {
+      // given
+      const headers = {'Authorization': 'bearer some.jwt.token'};
+      analyzer = new Analyzer({headers});
+      const line = new Line(1, 'rec_1;http://image.url', ';');
+
+      // when
+      await analyzer._analyzeSingleLine(line, analyzedLines);
+
+      // then
+      expect(mockedAxios.head).toHaveBeenCalledWith('http://image.url', {headers});
+    });
+  });
+
 });
 
 describe('#analyze', () => {

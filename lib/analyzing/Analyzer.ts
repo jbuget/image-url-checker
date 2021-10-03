@@ -13,12 +13,18 @@ export default class Analyzer {
 
   bulk: number;
   delay?: number;
+  headers?: any;
 
   constructor(options: OptionValues, httpClient?: HttpClient) {
     this._options = options;
-    this._httpClient = httpClient || new HttpClient();
     this.bulk = parseInt(options.bulk) || 10;
     this.delay = options.delay;
+    this.headers = options.headers;
+
+    this._httpClient = httpClient || new HttpClient();
+    if (options.headers) {
+      this._httpClient.headers = options.headers;
+    }
   }
 
   _sleep(ms: number): Promise<void> {
@@ -97,6 +103,7 @@ export default class Analyzer {
     logger.info(`  - lines: ${lines.length}`);
     logger.info(`  - bulk: ${this.bulk}`);
     logger.info(`  - delay: ${this.delay}`);
+    logger.info(`  - headers: ${this.headers}`);
     logger.info();
 
     const hrStart: [number, number] = process.hrtime();
