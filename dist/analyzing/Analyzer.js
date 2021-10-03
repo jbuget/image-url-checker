@@ -3,17 +3,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const axios_1 = __importDefault(require("axios"));
 const chalk_1 = __importDefault(require("chalk"));
 const p_map_1 = __importDefault(require("p-map"));
 const url_1 = require("url");
 const AnalyzedLine_1 = __importDefault(require("./AnalyzedLine"));
+const HttpClient_1 = require("../tools/HttpClient");
 const Logger_1 = require("../tools/Logger");
 class Analyzer {
-    constructor(options) {
+    constructor(options, httpClient) {
         this._options = options;
         this.bulk = parseInt(options.bulk) || 10;
         this.delay = options.delay;
+        this.headers = options.headers;
+        this._httpClient = httpClient || new HttpClient_1.HttpClient();
+        if (options.headers) {
+            this._httpClient.headers = options.headers;
+        }
     }
     _sleep(ms) {
         return new Promise((resolve) => {
@@ -24,7 +29,7 @@ class Analyzer {
         return this._isStatusOk(response) && this._isAnImage(response);
     }
     _isStatusOk(response) {
-        return response.status === 200;
+        return response.statusCode === 200;
     }
     _isAnImage(response) {
         return response.headers['content-type'].trim().toLowerCase().startsWith('image/');
@@ -34,6 +39,7 @@ class Analyzer {
         if (!analyzedLine.error) {
             try {
                 new url_1.URL(line.url);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             }
             catch (error) {
                 analyzedLine.markInError('FORMAT_ERROR', error.message);
@@ -41,7 +47,7 @@ class Analyzer {
         }
         if (!analyzedLine.error) {
             try {
-                const response = await axios_1.default.head(line.url);
+                const response = await this._httpClient.head(line.url);
                 if (!this._isValid(response)) {
                     analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
                 }
@@ -63,7 +69,11 @@ class Analyzer {
             Logger_1.logger.info(chalk_1.default.cyan(`${analyzedLine.index}.`) + ' ' + chalk_1.default.green(`${analyzedLine.raw}`));
         }
         else {
-            Logger_1.logger.info(chalk_1.default.cyan(`${analyzedLine.index}.`) + ' ' + chalk_1.default.red(`${analyzedLine.raw}`) + ' ' + chalk_1.default.yellow(`[${analyzedLine.error}]`));
+            Logger_1.logger.info(chalk_1.default.cyan(`${analyzedLine.index}.`) +
+                ' ' +
+                chalk_1.default.red(`${analyzedLine.raw}`) +
+                ' ' +
+                chalk_1.default.yellow(`[${analyzedLine.error}]`));
         }
         return analyzedLine;
     }
@@ -73,6 +83,7 @@ class Analyzer {
         Logger_1.logger.info(`  - lines: ${lines.length}`);
         Logger_1.logger.info(`  - bulk: ${this.bulk}`);
         Logger_1.logger.info(`  - delay: ${this.delay}`);
+        Logger_1.logger.info(`  - headers: ${this.headers}`);
         Logger_1.logger.info();
         const hrStart = process.hrtime();
         const analyzedLines = [];
@@ -85,3 +96,4 @@ class Analyzer {
     }
 }
 exports.default = Analyzer;
+//# sourceMappingURL=Analyzer.js.map

@@ -19,11 +19,19 @@ export default class Analyzer {
     this._options = options;
     this.bulk = parseInt(options.bulk) || 10;
     this.delay = options.delay;
-    this.headers = options.headers;
 
     this._httpClient = httpClient || new HttpClient();
     if (options.headers) {
-      this._httpClient.headers = options.headers;
+      this.headers = options.headers.reduce((result: any, header: string) => {
+        const separatorIndex = header.indexOf(':');
+        const headerName = header.substr(0, separatorIndex).trim();
+        const headerValue = header.substr(separatorIndex + 1, header.length - 1).trim();
+        if (headerName && headerValue) {
+          result[headerName] = headerValue;
+        }
+        return result;
+      }, {});
+      this._httpClient.headers = this.headers;
     }
   }
 

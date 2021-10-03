@@ -20,3 +20,4 @@ class AnalyzedLine extends Line_1.default {
     }
 }
 exports.default = AnalyzedLine;
+//# sourceMappingURL=AnalyzedLine.js.map
