@@ -23,6 +23,7 @@ npx image-url-checker -i input_file.csv -o output_file.csv
 | -d --delay _number_ | delay (in ms) between two URL calls | None |
 | -b --bulk _number_ | number of concurrent HTTP calls during analysis phase | 10 |
 | -f --from _number_ | line "from" | None |
+| -H --headers _headers..._ | HTTP request headers | None |
 | (required) -i --input _input_file_ | input file path | None |
 | -s --separator _character_ | column separator | ; |
 | -o --ouput _filepath_ | ouput file path | None |
