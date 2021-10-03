@@ -20,9 +20,9 @@ export default class Program {
       .option('-b, --bulk <bulk>', 'number of concurrent line analysis in parallel')
       .option('-d, --delay <delay>', 'delay between two HTTP call')
       .option('-f, --from <from>', 'line from')
-      .requiredOption('-i, --input <input>', 'file to analyze')
-      .option('-o, --output <output>', 'output file')
-      .option('-s, --separator <separator>', 'column separator')
+      .requiredOption('-i, --input <input>', 'input file data to analyze')
+      .option('-o, --output <output>', 'output file report to generate')
+      .option('-s, --separator <separator>', 'input file data column separator')
       .option('-t, --to <to>', 'line to');
   }
 
