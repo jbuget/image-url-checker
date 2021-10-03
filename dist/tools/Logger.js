@@ -20,3 +20,4 @@ class Logger {
 exports.default = Logger;
 const logger = new Logger();
 exports.logger = logger;
+//# sourceMappingURL=Logger.js.map

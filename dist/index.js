@@ -7,3 +7,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Program_1 = __importDefault(require("./Program"));
 const program = new Program_1.default();
 program.run(process.argv).then(() => process.exit(0));
+//# sourceMappingURL=index.js.map
