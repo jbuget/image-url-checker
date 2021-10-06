@@ -1,6 +1,6 @@
 import Line from '../../lib/parsing/Line';
 
-test('Constructor', () => {
+it('Constructor', () => {
   // given
   const rawLine = 'rec123;http://url.com/image.png';
 

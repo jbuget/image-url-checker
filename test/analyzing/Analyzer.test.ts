@@ -35,7 +35,7 @@ const mockedHttpClient = new TestingHttpClient(mockedHead);
 
 describe('#constructor', () => {
 
-  test('default bulk value should be 10', () => {
+  it('default bulk value should be 10', () => {
     // given
     const options: OptionValues = {};
 
@@ -95,7 +95,7 @@ describe('#_analyzeSingleLine', () => {
       });
     });
 
-    test('should set status to "OK"', async () => {
+    it('should set status to "OK"', async () => {
       // when
       const actual: AnalyzedLine = await analyzer._analyzeSingleLine(line, analyzedLines);
 
@@ -103,7 +103,7 @@ describe('#_analyzeSingleLine', () => {
       expect(actual.status).toBe('OK');
     });
 
-    test('should add given line to given analyzed lines array', async () => {
+    it('should add given line to given analyzed lines array', async () => {
       // given
       const initialAnalyzedLinesCount = analyzedLines.length;
 
@@ -114,7 +114,7 @@ describe('#_analyzeSingleLine', () => {
       expect(analyzedLines.length).toBe(initialAnalyzedLinesCount + 1);
     });
 
-    test('should log as success', async () => {
+    it('should log as success', async () => {
       // when
       await analyzer._analyzeSingleLine(line, analyzedLines);
 
@@ -125,7 +125,7 @@ describe('#_analyzeSingleLine', () => {
 
   describe('when given line is invalid', () => {
 
-    test('should add given line to given analyzed lines array', async () => {
+    it('should add given line to given analyzed lines array', async () => {
       // given
       const initialAnalyzedLinesCount = analyzedLines.length;
       const line = new Line(1, 'rec123;http://bad-url', ';');
@@ -137,7 +137,7 @@ describe('#_analyzeSingleLine', () => {
       expect(analyzedLines.length).toBe(initialAnalyzedLinesCount + 1);
     });
 
-    test('should mark line in error when URL is badly formed', async () => {
+    it('should mark line in error when URL is badly formed', async () => {
       // given
       const line = new Line(1, 'rec123;bad-url', ';');
 
@@ -149,7 +149,7 @@ describe('#_analyzeSingleLine', () => {
       expect(actual.error).toBe('FORMAT_ERROR');
     });
 
-    test('should mark line in error when resource is not accessible', async () => {
+    it('should mark line in error when resource is not accessible', async () => {
       // given
       const line = new Line(1, 'rec123;http://not.found/image.jpeg', ';');
       mockedHead.mockResolvedValue({
@@ -165,7 +165,7 @@ describe('#_analyzeSingleLine', () => {
       expect(actual.error).toBe('HTTP_ERROR');
     });
 
-    test('should mark line in error when resource is not an image', async () => {
+    it('should mark line in error when resource is not an image', async () => {
       // given
       const line = new Line(1, 'rec123;http://bad-url', ';');
 
@@ -177,7 +177,7 @@ describe('#_analyzeSingleLine', () => {
       expect(actual.error).toBe('HTTP_ERROR');
     });
 
-    test('should mark line in error when HTTP request fails', async () => {
+    it('should mark line in error when HTTP request fails', async () => {
       // given
       const line = new Line(1, 'rec123;http://request.failed/image.jpeg', ';');
       mockedHead.mockRejectedValue(new Error());
@@ -211,7 +211,7 @@ describe('#_analyzeSingleLine', () => {
 
 describe('#analyze', () => {
 
-  test('should set status to "OK"', async () => {
+  it('should set status to "OK"', async () => {
     // given
     const analyzer = new Analyzer({});
     const lines: Line[] = [
