@@ -17,14 +17,15 @@ export default class Program {
     this._command = new Command();
     this._command.version(this._version);
     this._command
-      .option('-b, --bulk <bulk>', 'number of concurrent line analysis in parallel')
-      .option('-d, --delay <delay>', 'delay between two HTTP call')
-      .option('-f, --from <from>', 'line from')
-      .option('-H, --headers <headers...>', 'specify HTTP request headers, ex: -H header:1 -H header:2 -H ...')
-      .requiredOption('-i, --input <input>', 'input file data to analyze')
-      .option('-o, --output <output>', 'output file report to generate')
-      .option('-s, --separator <separator>', 'input file data column separator')
-      .option('-t, --to <to>', 'line to');
+      .option('-b, --bulk <bulk>', 'number of (b)ulked concurrent line analysis in parallel')
+      .option('-d, --delay <delay>', '(d)elay between two HTTP call')
+      .option('-f, --from <from>', 'line (f)rom')
+      .option('-H, --headers <headers...>', 'specify HTTP request (h)eaders, ex: -H header:1 -H header:2 -H ...')
+      .requiredOption('-i, --input <input>', '(i)nput file data to analyze')
+      .option('-m, --timeout <timeout>', '(m)ax time of an HTTP check request ')
+      .option('-o, --output <output>', '(o)utput file report to generate')
+      .option('-s, --separator <separator>', 'input file data column (s)eparator')
+      .option('-t, --to <to>', 'line (t)o');
   }
 
   async run(argv: string[]): Promise<void> {
@@ -40,6 +41,7 @@ export default class Program {
     logger.info(`  - delay: ${options.delay}`);
     logger.info(`  - from: ${options.from}`);
     logger.info(`  - headers: ${options.headers}`);
+    logger.info(`  - timeout: ${options.timeout}`);
     logger.info(`  - output: ${options.output}`);
     logger.info(`  - separator: ${options.separator}`);
     logger.info(`  - to: ${options.to}`);
