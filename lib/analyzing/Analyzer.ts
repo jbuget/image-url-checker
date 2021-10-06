@@ -14,13 +14,18 @@ export default class Analyzer {
   bulk: number;
   delay?: number;
   headers?: any;
+  timeout: number;
 
   constructor(options: OptionValues, httpClient?: HttpClient) {
     this._options = options;
     this.bulk = parseInt(options.bulk) || 10;
     this.delay = options.delay;
+    this.timeout = parseInt(options.timeout) || 1000;
 
     this._httpClient = httpClient || new HttpClient();
+    if (options.timeout) {
+      this._httpClient.timeout = options.timeout;
+    }
     if (options.headers) {
       this.headers = options.headers.reduce((result: any, header: string) => {
         const separatorIndex = header.indexOf(':');
@@ -112,6 +117,7 @@ export default class Analyzer {
     logger.info(`  - bulk: ${this.bulk}`);
     logger.info(`  - delay: ${this.delay}`);
     logger.info(`  - headers: ${this.headers}`);
+    logger.info(`  - timeout: ${this.timeout}`);
     logger.info();
 
     const hrStart: [number, number] = process.hrtime();

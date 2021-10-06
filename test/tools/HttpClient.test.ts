@@ -7,7 +7,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('#head', () => {
 
-  it('should call Axios', async () => {
+  it('should call Axios with empty (object) config by default', async () => {
     // given
     const httpClient = new HttpClient();
     const url = 'http://some.url';
@@ -17,7 +17,7 @@ describe('#head', () => {
     await httpClient.head(url);
 
     // then
-    expect(axios.head).toHaveBeenCalledWith(url);
+    expect(axios.head).toHaveBeenCalledWith(url, {});
   });
 
   it('should return an HttpResponse object', async () => {

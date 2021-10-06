@@ -35,7 +35,7 @@ const mockedHttpClient = new TestingHttpClient(mockedHead);
 
 describe('#constructor', () => {
 
-  it('default bulk value should be 10', () => {
+  it('should have "bulk" value set to "10" by default', () => {
     // given
     const options: OptionValues = {};
 
@@ -44,6 +44,28 @@ describe('#constructor', () => {
 
     // then
     expect(analyzer.bulk).toBe(10);
+  });
+
+  it('should have "timeout" value set to "1000" by default', () => {
+    // given
+    const options: OptionValues = {};
+
+    // when
+    const analyzer = new Analyzer(options);
+
+    // then
+    expect(analyzer.timeout).toBe(1000);
+  });
+
+  it('should support "timeout" option', () => {
+    // given
+    const options: OptionValues = { timeout: 5000 };
+
+    // when
+    const analyzer = new Analyzer(options);
+
+    // then
+    expect(analyzer.timeout).toBe(5000);
   });
 
   it('should parse headers', () => {
