@@ -13,7 +13,30 @@ You need a working version of:
 ### As a tool
 
 ```bash
+# Basic
 npx image-url-checker -i input_file.csv -o output_file.csv
+
+# Advanced (fullname)
+npx image-url-checker \ 
+  --input input_file.csv \ 
+  --output output_file.csv \
+  --timeout 5000 \
+  --headers "Authorization: Bearer xxx.yyy.zzz"
+  --headers "User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:64.0) Gecko/20100101 Firefox/80.0"
+  --from 10
+  --to 200
+  --bulk 50
+
+# Advanced (shortcut)
+npx image-url-checker \ 
+  -i input_file.csv \ 
+  -o output_file.csv \
+  -m 5000 \
+  -H "Authorization: Bearer xxx.yyy.zzz"
+  -H "User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:64.0) Gecko/20100101 Firefox/80.0"
+  -f 10
+  -t 200
+  -b 50
 ```
 
 **Options:**
@@ -25,9 +48,10 @@ npx image-url-checker -i input_file.csv -o output_file.csv
 | -f --from _number_ | line "from" | None |
 | -H --headers _headers..._ | HTTP request headers | None |
 | (required) -i --input _input_file_ | input file path | None |
-| -s --separator _character_ | column separator | ; |
+| -m --timeout _max-time_ | max time allowed to succeed an HTTP check request | 1000 |
 | -o --ouput _filepath_ | ouput file path | None |
-| -f --to _number_ | line "to" | None |
+| -s --separator _character_ | column separator | ; |
+| -t --to _number_ | line "to" | None |
 
 **Input file:**
 
