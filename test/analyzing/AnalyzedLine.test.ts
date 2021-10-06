@@ -1,7 +1,7 @@
 import Line from '../../lib/parsing/Line';
 import AnalyzedLine from '../../lib/analyzing/AnalyzedLine';
 
-test('Constructor', () => {
+it('Constructor', () => {
   // given
   const line = new Line(1, 'rec123;http://image.url', ';');
 
@@ -14,7 +14,7 @@ test('Constructor', () => {
   expect(analyzedLine.comments.length).toBe(0);
 });
 
-test('#markInSuccess should set status to "OK"', () => {
+it('#markInSuccess should set status to "OK"', () => {
   // given
   const line = new Line(1, 'rec123;http://image.url', ';');
   const analyzedLine = new AnalyzedLine(line);
@@ -26,7 +26,7 @@ test('#markInSuccess should set status to "OK"', () => {
   expect(analyzedLine.status).toBe('OK');
 });
 
-test('#markInError should set status to "KO"', () => {
+it('#markInError should set status to "KO"', () => {
   // given
   const line = new Line(1, 'rec123;http://image.url', ';');
   const analyzedLine = new AnalyzedLine(line);

@@ -3,7 +3,7 @@ import CsvFileParser from '../../lib/parsing/CsvFileParser';
 
 describe('Constructor', () => {
 
-  test('should set ";" as default separator', () => {
+  it('should set ";" as default separator', () => {
     // given
     const options = {};
 
@@ -14,7 +14,7 @@ describe('Constructor', () => {
     expect(parser.separator).toBe(';');
   });
 
-  test('should use given separator', () => {
+  it('should use given separator', () => {
     // given
     const options = {separator: '/'};
 
@@ -28,7 +28,7 @@ describe('Constructor', () => {
 
 describe('#parse', () => {
 
-  test('should return as many Line objects as file lines', async () => {
+  it('should return as many Line objects as file lines', async () => {
     // given
     const parser = new CsvFileParser({ input: `${__dirname}/test_simple.csv.fixture` });
 
@@ -39,7 +39,7 @@ describe('#parse', () => {
     expect(lines.length).toBe(5);
   });
 
-  test('should ignore blank or empty lines', async () => {
+  it('should ignore blank or empty lines', async () => {
     // given
     const parser = new CsvFileParser({ input: `${__dirname}/test_blank_or_empty_lines.csv.fixture` });
 
@@ -50,7 +50,7 @@ describe('#parse', () => {
     expect(lines.length).toBe(3);
   });
 
-  test('should take into account "--from" option', async () => {
+  it('should take into account "--from" option', async () => {
     // given
     const parser = new CsvFileParser({from: 2, input: `${__dirname}/test_simple.csv.fixture`});
 
@@ -61,7 +61,7 @@ describe('#parse', () => {
     expect(lines.length).toBe(4);
   });
 
-  test('should take into account "--to" option', async () => {
+  it('should take into account "--to" option', async () => {
     // given
     const parser = new CsvFileParser({from: 3, input: `${__dirname}/test_simple.csv.fixture`});
 
@@ -72,7 +72,7 @@ describe('#parse', () => {
     expect(lines.length).toBe(3);
   });
 
-  test('should support "--from" and "--to" options simultaneously', async () => {
+  it('should support "--from" and "--to" options simultaneously', async () => {
     // given
     const parser = new CsvFileParser({from: 3, to: 4, input: `${__dirname}/test_simple.csv.fixture`});
 

@@ -5,7 +5,7 @@ import * as fs from 'fs';
 
 describe('Constructor', () => {
 
-  test('should set output', () => {
+  it('should set output', () => {
     // given
     const options = {output: `test_output.csv`};
 
@@ -16,7 +16,7 @@ describe('Constructor', () => {
     expect(reporter.output).toBe('test_output.csv');
   });
 
-  test('should set ";" as default separator', () => {
+  it('should set ";" as default separator', () => {
     // given
     const options = {};
 
@@ -27,7 +27,7 @@ describe('Constructor', () => {
     expect(reporter.separator).toBe(';');
   });
 
-  test('should use given separator', () => {
+  it('should use given separator', () => {
     // given
     const options = {separator: ','};
 
@@ -41,7 +41,7 @@ describe('Constructor', () => {
 
 describe('#report', () => {
 
-  test('should ', async () => {
+  it('should ', async () => {
     // given
     const output = `${__dirname}/test_output.csv`;
     const reporter = new CsvFileReporter({output});
