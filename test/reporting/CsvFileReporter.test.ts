@@ -15,6 +15,28 @@ describe('Constructor', () => {
     // then
     expect(reporter.output).toBe('test_output.csv');
   });
+
+  test('should set ";" as default separator', () => {
+    // given
+    const options = {};
+
+    // when
+    const reporter = new CsvFileReporter(options);
+
+    // then
+    expect(reporter.separator).toBe(';');
+  });
+
+  test('should use given separator', () => {
+    // given
+    const options = {separator: ','};
+
+    // when
+    const reporter = new CsvFileReporter(options);
+
+    // then
+    expect(reporter.separator).toBe(',');
+  });
 });
 
 describe('#report', () => {
