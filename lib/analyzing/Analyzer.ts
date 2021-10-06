@@ -80,8 +80,8 @@ export default class Analyzer {
             'HTTP status is not 200(OK) or the response content type is not an image'
           );
         }
-      } catch (err) {
-        analyzedLine.markInError('HTTP_ERROR', 'Unreachable HTTP resource');
+      } catch (err: any) {
+        analyzedLine.markInError('HTTP_ERROR', err.message);
       } finally {
         if (this.delay) {
           await this._sleep(this.delay);
