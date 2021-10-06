@@ -35,7 +35,7 @@ const mockedHttpClient = new TestingHttpClient(mockedHead);
 
 describe('#constructor', () => {
 
-  test('Default bulk value should be 10', () => {
+  test('default bulk value should be 10', () => {
     // given
     const options: OptionValues = {};
 
@@ -44,6 +44,31 @@ describe('#constructor', () => {
 
     // then
     expect(analyzer.bulk).toBe(10);
+  });
+
+  it('should parse headers', () => {
+    // given
+    const options: OptionValues = {
+      headers: [
+        'User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:64.0) Gecko/20100101 Firefox/80.0',
+        'Authorization: Bearer xxx-yyy-zzz',
+        'X-Custom-Header: Lorem ipsum dolor sit amet',
+        'X-Header-With-Single-Value: test',
+        'X-Wrong-Header',
+        ':wrong header value',
+      ]
+    };
+
+    // when
+    const analyzer = new Analyzer(options);
+
+    // then
+    expect(analyzer.headers).toStrictEqual({
+      'Authorization': 'Bearer xxx-yyy-zzz',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:64.0) Gecko/20100101 Firefox/80.0',
+      'X-Custom-Header': 'Lorem ipsum dolor sit amet',
+      'X-Header-With-Single-Value': 'test'
+    })
   });
 })
 
@@ -170,7 +195,7 @@ describe('#_analyzeSingleLine', () => {
 
     it('should make an HTTP request with given headers', async () => {
       // given
-      const headers = {'Authorization': 'bearer some.jwt.token'};
+      const headers = ['Authorization: Bearer some.jwt.token'];
       analyzer = new Analyzer({headers});
       const line = new Line(1, 'rec_1;http://image.url', ';');
 
@@ -178,7 +203,7 @@ describe('#_analyzeSingleLine', () => {
       await analyzer._analyzeSingleLine(line, analyzedLines);
 
       // then
-      expect(mockedAxios.head).toHaveBeenCalledWith('http://image.url', {headers});
+      expect(mockedAxios.head).toHaveBeenCalledWith('http://image.url', {headers: {'Authorization': 'Bearer some.jwt.token'}});
     });
   });
 
