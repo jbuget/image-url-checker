@@ -9,11 +9,18 @@ class HttpClient {
     set headers(value) {
         this._headers = value;
     }
+    set timeout(value) {
+        this._timeout = value;
+    }
     async head(url) {
-        let config;
-        if (this._headers)
-            config = { headers: this._headers };
-        const response = config ? await axios_1.default.head(url, config) : await axios_1.default.head(url);
+        const config = {};
+        if (this._headers) {
+            config.headers = this._headers;
+        }
+        if (this._timeout) {
+            config.timeout = this._timeout;
+        }
+        const response = await axios_1.default.head(url, config);
         return new HttpResponse(response);
     }
 }

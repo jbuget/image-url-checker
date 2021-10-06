@@ -14,10 +14,22 @@ class Analyzer {
         this._options = options;
         this.bulk = parseInt(options.bulk) || 10;
         this.delay = options.delay;
-        this.headers = options.headers;
+        this.timeout = parseInt(options.timeout) || 1000;
         this._httpClient = httpClient || new HttpClient_1.HttpClient();
+        if (options.timeout) {
+            this._httpClient.timeout = options.timeout;
+        }
         if (options.headers) {
-            this._httpClient.headers = options.headers;
+            this.headers = options.headers.reduce((result, header) => {
+                const separatorIndex = header.indexOf(':');
+                const headerName = header.substr(0, separatorIndex).trim();
+                const headerValue = header.substr(separatorIndex + 1, header.length - 1).trim();
+                if (headerName && headerValue) {
+                    result[headerName] = headerValue;
+                }
+                return result;
+            }, {});
+            this._httpClient.headers = this.headers;
         }
     }
     _sleep(ms) {
@@ -53,7 +65,7 @@ class Analyzer {
                 }
             }
             catch (err) {
-                analyzedLine.markInError('HTTP_ERROR', 'Unreachable HTTP resource');
+                analyzedLine.markInError('HTTP_ERROR', err.message);
             }
             finally {
                 if (this.delay) {
@@ -84,6 +96,7 @@ class Analyzer {
         Logger_1.logger.info(`  - bulk: ${this.bulk}`);
         Logger_1.logger.info(`  - delay: ${this.delay}`);
         Logger_1.logger.info(`  - headers: ${this.headers}`);
+        Logger_1.logger.info(`  - timeout: ${this.timeout}`);
         Logger_1.logger.info();
         const hrStart = process.hrtime();
         const analyzedLines = [];

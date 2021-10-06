@@ -7,6 +7,7 @@ class CsvFileReporter extends Reporter_1.AbstractReporter {
     constructor(options) {
         super(options);
         this.output = options.output;
+        this.separator = options.separator || ';';
     }
     writeOutputLines(analyzedLines) {
         return new Promise((resolve) => {
@@ -14,9 +15,9 @@ class CsvFileReporter extends Reporter_1.AbstractReporter {
             const outputStream = (0, fs_1.createWriteStream)(this.output, { flags: 'w' });
             outputStream.on('finish', resolve);
             analyzedLines.forEach((line) => {
-                outputStream.write(`${line.reference};${line.url};${line.status}`);
+                outputStream.write([line.reference, line.url, line.status].join(this.separator));
                 if (line.error) {
-                    outputStream.write(`;${line.error};`);
+                    outputStream.write(`${this.separator}${line.error}${this.separator}`);
                     line.comments.forEach((comment) => outputStream.write(`${comment}`));
                 }
                 outputStream.write('\n');
