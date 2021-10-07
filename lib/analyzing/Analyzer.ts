@@ -6,6 +6,9 @@ import Line from '../parsing/Line';
 import AnalyzedLine from './AnalyzedLine';
 import { HttpClient, HttpResponse } from '../tools/HttpClient';
 import { logger } from '../tools/Logger';
+import UrlFormatCheck from './UrlFormatCheck';
+import StatusCodeCheck from './StatusCodeCheck';
+import ContentTypeCheck from './ContentTypeCheck';
 
 export default class Analyzer {
   private readonly _options: OptionValues;
@@ -46,40 +49,17 @@ export default class Analyzer {
     });
   }
 
-  _isValid(response: HttpResponse): boolean {
-    return this._isStatusOk(response) && this._isAnImage(response);
-  }
-
-  _isStatusOk(response: HttpResponse): boolean {
-    return response.statusCode === 200;
-  }
-
-  _isAnImage(response: HttpResponse): boolean {
-    return response.headers['content-type'].trim().toLowerCase().startsWith('image/');
-  }
-
   async _analyzeSingleLine(line: Line, analyzedLines: AnalyzedLine[]): Promise<AnalyzedLine> {
-    const analyzedLine = new AnalyzedLine(line);
+    const analyzedLine: AnalyzedLine = new AnalyzedLine(line);
 
-    if (!analyzedLine.error) {
-      try {
-        new URL(line.url);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        analyzedLine.markInError('FORMAT_ERROR', error.message);
-      }
-    }
+    await new UrlFormatCheck().check(line, analyzedLine);
 
     if (!analyzedLine.error) {
       try {
         const response = await this._httpClient.head(line.url);
 
-        if (!this._isValid(response)) {
-          analyzedLine.markInError(
-            'HTTP_ERROR',
-            'HTTP status is not 200(OK) or the response content type is not an image'
-          );
-        }
+        await new StatusCodeCheck().check(response, analyzedLine);
+        await new ContentTypeCheck().check(response, analyzedLine);
       } catch (err: any) {
         analyzedLine.markInError('HTTP_ERROR', err.message);
       } finally {
