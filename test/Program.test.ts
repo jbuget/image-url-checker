@@ -26,7 +26,7 @@ describe('#run', () => {
   it('should orchestrate parsing → analyzing → reporting phases', async () => {
     // given
     const program = new Program();
-    const argv = ['/usr/local/bin/node', 'image-url-checker', '-i', 'test.file', '-c', 'test.config.json'];
+    const argv = ['/usr/local/bin/node', 'image-url-checker', '-i', 'test.file'];
 
     const line1 = new Line(1, 'rec_1', 'http://1.link.url');
     const line2 = new Line(2, 'rec_2', 'http://2.link.url');
