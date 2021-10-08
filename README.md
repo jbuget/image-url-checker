@@ -1,4 +1,4 @@
-# image-url-checker
+# url-examiner
 
 A small Node.js tool & library that checks image URL from a given CSV input file and report the analysis results in a new CSV output file. 
 
@@ -14,10 +14,10 @@ You need a working version of:
 
 ```bash
 # Basic
-npx image-url-checker -i input_file.csv -o output_file.csv
+npx url-examiner -i input_file.csv -o output_file.csv
 
 # Advanced (fullname)
-npx image-url-checker \ 
+npx url-examiner \ 
   --input input_file.csv \ 
   --output output_file.csv \
   --timeout 5000 \
@@ -28,7 +28,7 @@ npx image-url-checker \
   --bulk 50
 
 # Advanced (shortcut)
-npx image-url-checker \ 
+npx url-examiner \ 
   -i input_file.csv \ 
   -o output_file.csv \
   -m 5000 \
@@ -64,12 +64,12 @@ Supported data format (without head line):
 
 **Output file:**
 
-![Screenshot](docs/image-url-checker_screenshot.png)
+![Screenshot](docs/url-examiner_screenshot.png)
 
 ### As a library
 
 ```bash
-npm install image-url-checker
+npm install url-examiner
 ```
 
 ```javascript

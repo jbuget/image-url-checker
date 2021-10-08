@@ -3,8 +3,8 @@
 ### Installation
 
 ```bash
-git clone https://github.com/jbuget/image-url-checker.git
-cd image-url-checker
+git clone https://github.com/jbuget/url-examiner.git
+cd url-examiner
 npm install
 npm test
 ```
