@@ -1,6 +1,6 @@
 # url-examiner
 
-A small Node.js tool & library that checks image URL from a given CSV input file and report the analysis results in a new CSV output file. 
+A small Node.js tool & library that checks URL from a given CSV input file and report the analysis results in a new CSV output file. 
 
 ## Usage
 
