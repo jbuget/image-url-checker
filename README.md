@@ -7,7 +7,7 @@ A small Node.js tool & library that checks image URL from a given CSV input file
 ### Prerequisites
 
 You need a working version of:
-* Node v14+ (recommended v14.17.6)
+* Node v14+ (recommended v14.18.0)
 * npm 6+ (recommended v6.14.15)
 
 ### As a tool
