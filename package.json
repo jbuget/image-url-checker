@@ -1,15 +1,15 @@
 {
-  "name": "image-url-checker",
+  "name": "url-examiner",
   "version": "0.8.0",
   "description": "Node images URL checker",
   "main": "index.js",
   "bin": {
-    "image-url-checker": "./dist/index.js"
+    "url-examiner": "./dist/index.js"
   },
   "scripts": {
     "prebuild": "node -p \"'export const LIB_VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > lib/version.ts",
     "build": "tsc",
-    "dist": "rm -rf dist && npm run build && cp -R build dist && pkg . --output dist/image-url-checker",
+    "dist": "rm -rf dist && npm run build && cp -R build dist && pkg . --output dist/url-examiner",
     "format": "prettier --config .prettierrc --write 'lib/**/*.ts'",
     "preversion": "./scripts/preversion.sh && npm run build && npm test",
     "version": "npm run dist && git add -A dist lib/version.ts",
@@ -28,14 +28,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jbuget/image-url-checker.git"
+    "url": "git+https://github.com/jbuget/url-examiner.git"
   },
   "author": "Jérémy Buget <contact@jbuget.fr>",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/jbuget/image-url-checker/issues"
+    "url": "https://github.com/jbuget/url-examiner/issues"
   },
-  "homepage": "https://github.com/jbuget/image-url-checker#readme",
+  "homepage": "https://github.com/jbuget/url-examiner#readme",
   "engines": {
     "node": "14.18.0",
     "npm": "6.14.15"
