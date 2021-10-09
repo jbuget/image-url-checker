@@ -1,5 +1,5 @@
 import Plugin from './Plugin';
-import { plugin as corePlugin } from './core/CorePlugin';
+import { plugin as corePlugin } from './core';
 import { logger } from '../tools/Logger';
 import { Check, HttpCheck } from '../analyzing/Check';
 

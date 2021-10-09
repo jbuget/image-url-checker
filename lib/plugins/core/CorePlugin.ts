@@ -17,7 +17,3 @@ export default class CorePlugin extends Plugin {
     super('plugin:core', config);
   }
 }
-
-const plugin = new CorePlugin();
-
-export { plugin };
