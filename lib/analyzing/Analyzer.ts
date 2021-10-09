@@ -5,9 +5,7 @@ import Line from '../parsing/Line';
 import AnalyzedLine from './AnalyzedLine';
 import { HttpClient } from '../tools/HttpClient';
 import { logger } from '../tools/Logger';
-import UrlFormatCheck from '../plugins/core/UrlFormatCheck';
-import StatusCodeCheck from '../plugins/core/StatusCodeCheck';
-import ContentTypeCheck from '../plugins/images/ContentTypeCheck';
+import { registry } from '../plugins/PluginRegistry';
 
 export default class Analyzer {
   private readonly _options: OptionValues;
@@ -51,14 +49,17 @@ export default class Analyzer {
   async _analyzeSingleLine(line: Line, analyzedLines: AnalyzedLine[]): Promise<AnalyzedLine> {
     const analyzedLine: AnalyzedLine = new AnalyzedLine(line);
 
-    await new UrlFormatCheck().check(line, analyzedLine);
+    for (const check of registry.preHttpChecks) {
+      await check.check(line, analyzedLine);
+    }
 
     if (!analyzedLine.error) {
       try {
         const response = await this._httpClient.head(line.url);
 
-        await new StatusCodeCheck().check(response, analyzedLine);
-        await new ContentTypeCheck().check(response, analyzedLine);
+        for (const check of registry.httpChecks) {
+          await check.check(response, analyzedLine);
+        }
       } catch (err: any) {
         analyzedLine.markInError('HTTP_ERROR', err.message);
       } finally {
