@@ -1,7 +1,7 @@
-import { Check } from './Check';
-import Line from '../parsing/Line';
-import AnalyzedLine from './AnalyzedLine';
 import { URL } from 'url';
+import { Check } from '../../analyzing/Check';
+import Line from '../../parsing/Line';
+import AnalyzedLine from './../../analyzing/AnalyzedLine';
 
 export default class UrlFormatCheck implements Check {
   async check(line: Line, analyzedLine: AnalyzedLine): Promise<AnalyzedLine> {

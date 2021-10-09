@@ -1,14 +1,13 @@
 import chalk from 'chalk';
 import { OptionValues } from 'commander';
 import pMap from 'p-map';
-import { URL } from 'url';
 import Line from '../parsing/Line';
 import AnalyzedLine from './AnalyzedLine';
-import { HttpClient, HttpResponse } from '../tools/HttpClient';
+import { HttpClient } from '../tools/HttpClient';
 import { logger } from '../tools/Logger';
-import UrlFormatCheck from './UrlFormatCheck';
-import StatusCodeCheck from './StatusCodeCheck';
-import ContentTypeCheck from './ContentTypeCheck';
+import UrlFormatCheck from '../plugins/core/UrlFormatCheck';
+import StatusCodeCheck from '../plugins/core/StatusCodeCheck';
+import ContentTypeCheck from '../plugins/images/ContentTypeCheck';
 
 export default class Analyzer {
   private readonly _options: OptionValues;
