@@ -7,6 +7,8 @@ import CsvFileReporter from './reporting/CsvFileReporter';
 import { logger } from './tools/Logger';
 import { LIB_VERSION } from './version';
 import ConsoleReporter from './reporting/ConsoleReporter';
+import { registry } from './plugins/PluginRegistry';
+import Plugin from './plugins/Plugin';
 
 export default class Program {
   private readonly _version: string;
@@ -55,5 +57,10 @@ export default class Program {
 
     const reporter = options.output ? new CsvFileReporter(options) : new ConsoleReporter(options);
     await reporter.report(analyzedLines);
+  }
+
+  use(plugin: Plugin): this {
+    registry.register(plugin);
+    return this;
   }
 }

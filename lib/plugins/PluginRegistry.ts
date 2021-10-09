@@ -1,6 +1,5 @@
 import Plugin from './Plugin';
 import { plugin as corePlugin } from './core/CorePlugin';
-import { plugin as imagesPlugin } from './images/ImagesPlugin';
 import { logger } from '../tools/Logger';
 import { Check, HttpCheck } from '../analyzing/Check';
 
@@ -9,6 +8,7 @@ export default class PluginRegistry {
 
   constructor() {
     this._plugins = new Map<string, Plugin>();
+    this.register(corePlugin);
   }
 
   register(plugin: Plugin): Map<string, Plugin> {
@@ -59,7 +59,4 @@ export default class PluginRegistry {
 }
 
 const registry = new PluginRegistry();
-registry.register(corePlugin);
-registry.register(imagesPlugin);
-
 export { registry };
