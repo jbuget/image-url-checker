@@ -1,6 +1,6 @@
-import { HttpCheck } from './Check';
-import { HttpResponse } from '../tools/HttpClient';
-import AnalyzedLine from './AnalyzedLine';
+import { HttpCheck } from '../../analyzing/Check';
+import { HttpResponse } from '../../tools/HttpClient';
+import AnalyzedLine from '../../analyzing/AnalyzedLine';
 
 export default class StatusCodeCheck implements HttpCheck {
   async check(response: HttpResponse, analyzedLine: AnalyzedLine): Promise<AnalyzedLine> {
