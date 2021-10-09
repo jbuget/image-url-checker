@@ -15,7 +15,3 @@ export default class ImagesPlugin extends Plugin {
     super('plugin:images', config);
   }
 }
-
-const plugin = new ImagesPlugin();
-
-export { plugin };

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import Program from './Program';
-import { plugin as imagesPlugin } from './plugins/images/ImagesPlugin';
+import { plugin as imagesPlugin } from './plugins/images';
 
 const program = new Program();
 
