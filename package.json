@@ -1,6 +1,6 @@
 {
   "name": "url-examiner",
-  "version": "0.9.1",
+  "version": "1.0.0",
   "description": "Node images URL checker",
   "main": "index.js",
   "bin": {

@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = __importDefault(require("chalk"));
 const p_map_1 = __importDefault(require("p-map"));
-const url_1 = require("url");
 const AnalyzedLine_1 = __importDefault(require("./AnalyzedLine"));
 const HttpClient_1 = require("../tools/HttpClient");
 const Logger_1 = require("../tools/Logger");
+const PluginRegistry_1 = require("../plugins/PluginRegistry");
 class Analyzer {
     constructor(options, httpClient) {
         this._options = options;
@@ -37,31 +37,16 @@ class Analyzer {
             setTimeout(resolve, ms);
         });
     }
-    _isValid(response) {
-        return this._isStatusOk(response) && this._isAnImage(response);
-    }
-    _isStatusOk(response) {
-        return response.statusCode === 200;
-    }
-    _isAnImage(response) {
-        return response.headers['content-type'].trim().toLowerCase().startsWith('image/');
-    }
     async _analyzeSingleLine(line, analyzedLines) {
         const analyzedLine = new AnalyzedLine_1.default(line);
-        if (!analyzedLine.error) {
-            try {
-                new url_1.URL(line.url);
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            }
-            catch (error) {
-                analyzedLine.markInError('FORMAT_ERROR', error.message);
-            }
+        for (const check of PluginRegistry_1.registry.preHttpChecks) {
+            await check.check(line, analyzedLine);
         }
         if (!analyzedLine.error) {
             try {
                 const response = await this._httpClient.head(line.url);
-                if (!this._isValid(response)) {
-                    analyzedLine.markInError('HTTP_ERROR', 'HTTP status is not 200(OK) or the response content type is not an image');
+                for (const check of PluginRegistry_1.registry.httpChecks) {
+                    await check.check(response, analyzedLine);
                 }
             }
             catch (err) {

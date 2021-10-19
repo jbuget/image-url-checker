@@ -10,6 +10,7 @@ const CsvFileReporter_1 = __importDefault(require("./reporting/CsvFileReporter")
 const Logger_1 = require("./tools/Logger");
 const version_1 = require("./version");
 const ConsoleReporter_1 = __importDefault(require("./reporting/ConsoleReporter"));
+const PluginRegistry_1 = require("./plugins/PluginRegistry");
 class Program {
     constructor() {
         this._version = version_1.LIB_VERSION;
@@ -48,6 +49,10 @@ class Program {
         const analyzedLines = await analyzer.analyze(lines);
         const reporter = options.output ? new CsvFileReporter_1.default(options) : new ConsoleReporter_1.default(options);
         await reporter.report(analyzedLines);
+    }
+    use(plugin) {
+        PluginRegistry_1.registry.register(plugin);
+        return this;
     }
 }
 exports.default = Program;
