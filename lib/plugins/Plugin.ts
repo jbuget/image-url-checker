@@ -21,8 +21,4 @@ export default abstract class Plugin {
   get httpChecks(): HttpCheck[] {
     return this._config.analysis.httpChecks;
   }
-
-  get postHttpChecks(): Check[] {
-    return this._config.analysis.postHttpChecks;
-  }
 }
