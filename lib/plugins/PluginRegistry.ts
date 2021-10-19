@@ -48,14 +48,6 @@ export default class PluginRegistry {
     });
     return checks;
   }
-
-  get postHttpChecks(): Check[] {
-    let checks: Check[] = [];
-    Array.from(this._plugins.values()).forEach((plugin) => {
-      checks = checks.concat(plugin.postHttpChecks);
-    });
-    return checks;
-  }
 }
 
 const registry = new PluginRegistry();

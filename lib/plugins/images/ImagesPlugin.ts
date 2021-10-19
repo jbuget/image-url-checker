@@ -3,7 +3,6 @@ import PluginConfig, { AnalysisOptions, ParsingOptions, ReportingOptions } from 
 import ContentTypeCheck from './ContentTypeCheck';
 
 export default class ImagesPlugin extends Plugin {
-
   constructor() {
     const config = new PluginConfig(
       new ParsingOptions(),
