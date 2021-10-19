@@ -1,7 +1,6 @@
 import { Check, HttpCheck } from '../analyzing/Check';
 
-export class ParsingOptions {
-}
+export class ParsingOptions {}
 
 export class AnalysisOptions {
   preHttpChecks: Check[];
@@ -13,8 +12,7 @@ export class AnalysisOptions {
   }
 }
 
-export class ReportingOptions {
-}
+export class ReportingOptions {}
 
 export default class PluginConfig {
   parsing: ParsingOptions;

@@ -49,7 +49,7 @@ describe('UrlFormatCheck', () => {
       // then
       expect(analyzedLine.status).toBe('KO');
       expect(analyzedLine.error).toBe('FORMAT_ERROR');
-      expect(analyzedLine.comments[0]).toBe('Invalid URL: wrong_format_url/pix.fr/images/logo-join-campaign.svg');
+      expect(analyzedLine.comments[0].startsWith('Invalid URL')).toBeTruthy();
     });
   });
 });
