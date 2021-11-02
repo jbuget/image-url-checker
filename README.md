@@ -1,5 +1,7 @@
 # url-examiner
 
+[![CircleCI](https://circleci.com/gh/jbuget/url-examiner/tree/main.svg?style=svg)](https://circleci.com/gh/jbuget/url-examiner/tree/main)
+
 A small Node.js tool & library that checks URL from a given CSV input file and report the analysis results in a new CSV output file. 
 
 ## Usage
